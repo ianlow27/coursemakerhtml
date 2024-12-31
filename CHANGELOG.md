@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.3_241231-1822 - Additional enhancements
+-  Additional enhancements
+
 ## 0.0.2_241220-1222 - Additional features for the creation of courses
 -  Additional features for the creation of courses
 

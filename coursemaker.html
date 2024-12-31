@@ -1,14 +1,16 @@
 <!DOCTYPE html><html><head><script>
-let startqst=0; //0;//2; //2;// 0;
+let startqst=1; //0;//2; //2;// 0;
 //-----------------------------------
 let sectionfldr='1starter'; //2basc';//1bgnr';
 const coursename='Demonstration Course for CourseMakerHTML by Fred Bloggs';
+const coursedesc='This is a test course demonstrating how a course could look like.';
 const coursefldr='democourse';
 const sectionlist="\
 1. Starter|1starter|Introductory section for all starters%%%\
 2. Basic|2basic|Basic lessons teaching the fundamentals%%%\
 3. Intermediate|3intermediate|Intermediate lessons teaching the more complex concepts%%%\
 4. Advanced|4advanced|Advanced lessons teaching the more advanced concepts";
+//-----------------------------------
 //-----------------------------------
 let asections=Array(); 
 const atmpsects=sectionlist.split(/%%%/);
@@ -32,22 +34,12 @@ let part01=''; let part02=''; let part03=''; let part04=''; let part05=''; //!!
 textarea {font-size:80%;}
 button {font-size:80%;}
 </style> 
-<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0' />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
-
 <body style='padding:6px;font-size:80%;font-family:Times New Roman;xcolor:white;background-color:#efefea;'>
-
-<b>
-github.com/ianlow27/coursemakerhtml
-</b>
-- 0.0.2_241220-1222 
-|coursemakerhtml creates courses locally within the browser
-|Author: Ian Low
-|Copyright (c) 2024 Ian Low
-|Usage Rights: MIT License
-
 <center>
-
+<b>CourseMakerHTML</b> 0.0.3_241231-1822<br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 <i><span id='h6part' style='text-decoration:italic;'></span></i>
 <br/><span id='h3part' style='font-weight:bold;font-size:128%;'></span> <!-- !! -->
@@ -84,7 +76,7 @@ let alines = Array();
 //alert(31);
 //let loadjs=function(jsfile, onloadfunc){
 function loadjs(jsfile, onloadfunc){
-dbg(jsfile);
+//dbg(jsfile);
     const scriptobj = document.createElement('script');
     scriptobj.src = jsfile;
     scriptobj.id='currlib';
@@ -94,7 +86,7 @@ dbg(jsfile);
 }//;//endfunc
 //---------------
 function unloadjs(){
-dbg(4);
+//dbg(4);
 try{
   delete document.getElementById('currlib');
 }catch(e){
@@ -103,7 +95,7 @@ try{
 }//endfunc
 //----------------
 let loadedjs=function(){
-dbg(totparts,currpart);
+//dbg(totparts,currpart);
   totparts=currpart; //@1
   if(eval('part'+sprintf0d(2,currpart+1))!=''){
     totparts= currpart+1;
@@ -112,10 +104,10 @@ dbg(totparts,currpart);
   currqst=startqst;
 //alert(1);
   if(!currqst){
-dbg(2);
+//dbg(2);
     showlandingpg();
   }else {
-dbg(3);
+//dbg(3);
 //unloadjs();
     gencourse();//<===!!!!!!!!!!!!!
   }
@@ -123,7 +115,7 @@ dbg(3);
 //=============================
 //alert('1335'+currpart);
 
-alert('currpart__'+currpart);
+//alert('currpart__'+currpart);
 try{
   loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart)+'.js', loadedjs);
   loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart+1)+'.js', loadedjs);
@@ -225,12 +217,15 @@ function gencourse(){
       //i1 +"/"+alines.length + " "+
      
       //----------------------!!
+      
       aqst[0]
          .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
          .replace(/##(\s+)/g, currpart+'.'+currqst+''+"$1")
          .replace(/''([\w\-\s]+)''/g, "<i>$1</i>")
          .replace(/\{\{/g, '<b>')
          .replace(/\}\}/g, '</b>')
+         .replace(/>>/g, '<br/>')
+         .replace(/\{([a-z0-9]+)\.mp4\}/g, "<video controls width='96%' controlslist='nofullscreen nodownload noremoteplayback noplaybackrate foobar' ><source src='./"+coursefldr+"/"+sectionfldr+"/$1.mp4' type='video/mp4' /></video>")
          + "<br/>"+
       qststr+ "<br/><br/><br/>"+
       //----------------------!!
@@ -319,19 +314,23 @@ function sprintf0d(pwidth=2, pval=0){ //!!
 }
 //--------------------------------------
 function initgencourse(){ //!!
-dbg('part'+sprintf0d(2, currpart));
+//dbg('part'+sprintf0d(2, currpart));
 tx1.value=eval('part'+sprintf0d(2, currpart));
 //currqst=1;
 alines1 = tx1.value.split(/\n/);
 alines = Array();
-dbg(tx1.value);
+//dbg(tx1.value);
 for(i in alines1){
 //dbg(alines1[i]);
-  if(alines1[i].trim()==""){
-  }else if((alines1[i].trim().substr(0,1)=="{")
+  alines1[i]=alines1[i].trim();
+  if(alines1[i]==""){
+  }else if((alines1[i].substr(0,1)=="{")
      && (alines1[i].substr(alines1[i].length-1,1)=='}')){
     //coursename =alines1[i].substr(1,alines1[i].length-2);
-  }else if((alines1[i].trim().substr(0,1)=="[")
+  }else if((alines1[i].substr(0,2)=="/*") && (alines1[i].substr(alines1[i].length-2,2)=='*/')){
+       //dbg('___111'+alines1[i].substr(alines1[i].length-2,2));
+    //do nothing ignore comment
+  }else if((alines1[i].substr(0,1)=="[")
      && (alines1[i].substr(alines1[i].length-1,1)==']')){
     currpartname =alines1[i].substr(1,alines1[i].length-2);
   }else{
@@ -362,12 +361,12 @@ break;
   }
 }//endfor
 //if(!totparts) totparts=1;
-dbg(currpart, totparts);
+//dbg(currpart, totparts);
 if(currpart > totparts){
-  h1part.innerHTML = 'Congratulations! You have completed the section!';
+  //h1part.innerHTML = 'Congratulations! You have completed the section!';
   return 0;
 }
-dbg('totparts='+totparts);
+//dbg('totparts='+totparts);
 //====================================
 //====================================
 //====================================
@@ -390,18 +389,19 @@ function showlandingpg(){
 try{
 //alert('currsect_'+currsect);
   h6part.innerHTML=coursename;
+  h1part.innerHTML=coursedesc;
   let strout='';
   const asects=sectionlist.split(/%%%/);
   for(i in asects){
     const atmp1=asects[i].split(/\|/);
     if(strout!='') strout+='<br/>';
-    strout+='<b>'+atmp1[0]+': </b>' + atmp1[2] +  "<button style='";
+    strout+='<b style="font-size:110%;">'+atmp1[0]+': </b>' + atmp1[2] +  "<div style='text-align:right;'><button style='text-align:right;";
     if(currsect > i){
      strout+="'  onclick='startsection( \""+atmp1[1]+"\");'>";// , \""+atmp1[0]+"\");'>";
     }else {
       strout+="color:#bbb'>";
     }
-    strout+='Start</button>';
+    strout+='Start</button></div>';
   }//endfor
 
   
@@ -413,7 +413,7 @@ try{
 }//endfunc
 //--------------------------------------
 function startsection(psection){
-alert(psection);
+//alert(psection);
 try{
   //alert(2);
   currqst=1;
@@ -421,7 +421,7 @@ try{
   startqst=1;
   sectionfldr=psection;
   //currsectname=pname;
-dbg(currsectname);
+//dbg(currsectname);
    loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart)+'.js', loadedjs);
    
   //alert(33);
@@ -454,6 +454,9 @@ function dbg(pstr,pstr1='',pstr2='',) {
 //--------------------------------------
 </script>
 </body>
+
+
+
 
 
 
