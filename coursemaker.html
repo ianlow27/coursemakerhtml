@@ -1,16 +1,15 @@
 <!DOCTYPE html><html><head><script>
 let startqst=1; //0;//2; //2;// 0;
 //-----------------------------------
-let sectionfldr='1starter'; //2basc';//1bgnr';
 const coursename='Demonstration Course for CourseMakerHTML by Fred Bloggs';
 const coursedesc='This is a test course demonstrating how a course could look like.';
 const coursefldr='democourse';
+let sectionfldr='1starter'; //2basc';//1bgnr';
 const sectionlist="\
 1. Starter|1starter|Introductory section for all starters%%%\
 2. Basic|2basic|Basic lessons teaching the fundamentals%%%\
 3. Intermediate|3intermediate|Intermediate lessons teaching the more complex concepts%%%\
 4. Advanced|4advanced|Advanced lessons teaching the more advanced concepts";
-//-----------------------------------
 //-----------------------------------
 let asections=Array(); 
 const atmpsects=sectionlist.split(/%%%/);
@@ -18,10 +17,11 @@ for(i in atmpsects){
   const atmp1=atmpsects[i].split(/\|/);
   asections[atmp1[1]]=atmp1[0];
 }//endfor
-
+//alert(22);
 //==========================================
 const appref='coursemakerhtml_'+coursefldr+'_'+sectionfldr+'_';
 let part01=''; let part02=''; let part03=''; let part04=''; let part05=''; //!!
+//alert(46);
 </script>
 <!--
 <script src='./democourse/1starter/part01.js'></script>
@@ -38,8 +38,9 @@ button {font-size:80%;}
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
 <body style='padding:6px;font-size:80%;font-family:Times New Roman;xcolor:white;background-color:#efefea;'>
+<div id='dvstat'></div>
 <center>
-<b>CourseMakerHTML</b> 0.0.3_241231-1822<br/>
+<b>CourseMakerHTML</b> 0.0.4_250103-0242<br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 <i><span id='h6part' style='text-decoration:italic;'></span></i>
 <br/><span id='h3part' style='font-weight:bold;font-size:128%;'></span> <!-- !! -->
@@ -48,6 +49,7 @@ button {font-size:80%;}
 <br/><button id='btn1' style='display:none;' onclick='gencourse();'>Begin</button>
 <div id='dv1' style='font-weight:normal;'></div>
 <script>
+//alert(11111);
 //!!
 let currsect=1;
 let currsectname='';
@@ -56,6 +58,11 @@ let currpartname='';
 let currqst=1;
 let totparts=0;
 let totsects=0;
+
+let gmtotqstn=0;
+let gmtotrght=0;
+let gmtotwrng=0;
+
 
 //alert(sprintf0d(2, currpart));
 //if(localStorage.getItem(appref+'tx1')==null){
@@ -69,6 +76,7 @@ h1part=document.getElementById('h1part'); //!!
 h6part=document.getElementById('h6part'); //!!
 h3part=document.getElementById('h3part'); //!!
 btn1=document.getElementById('btn1');
+dvstat=document.getElementById('dvstat');
 tx1.value=eval('part'+sprintf0d(2, currpart)); //localStorage.getItem(appref+'tx1');
 let alines1 = Array(); //tx1.value.split(/\n/);
 let alines = Array();
@@ -102,15 +110,20 @@ let loadedjs=function(){
   }
   //alert(loadedtest1());
   currqst=startqst;
-//alert(1);
+//alert(1+'____'+currpart);
+try{
   if(!currqst){
-//dbg(2);
+//alert(2);
     showlandingpg();
   }else {
-//dbg(3);
+//alert(3);
 //unloadjs();
+//alert('Loaded!!!');
     gencourse();//<===!!!!!!!!!!!!!
   }
+}catch(e){
+  alert(e.message);
+}
 };//endfunc
 //=============================
 //alert('1335'+currpart);
@@ -126,13 +139,17 @@ try{
 //=============================
 //=============================
 function gencourse(){
+
+try{
+  //alert(159);
   if(!initgencourse()) return; //!!
-  
+  dbg(161);
   //localStorage.setItem(appref+'tx1', tx1.value);
   tx1.style.display='none';
   btn1.style.display='none';
  
   let strout='';
+ 
   for(i in alines){
     let qststr="";
     let ansstr='';
@@ -156,7 +173,8 @@ function gencourse(){
     let asel=Array();
     if(typeof aqst[1] != 'undefined') 
       asel=aqst[1].split(/\[/);
-
+    const aqst1=aqst[0].split(/%%%/);
+    aqst[0]=aqst1[0];
     if(aqst.length < 2){
       //alert(776);
       functype="info";
@@ -172,7 +190,7 @@ function gencourse(){
           ansstr+=atmp1[0];
           if(ansidstr!="") ansidstr+="|";
           ansidstr+='ans'+i1+'_'+j;
-          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:50px'></input>"+atmp1[1];
+          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:50px' name='"+aqst[j]+"'></input>"+atmp1[1];
         }else {
           qststr+=asel[j];
         }
@@ -198,26 +216,29 @@ function gencourse(){
         }else{
           ansstr+="false";
         }
+        const atmp1=aqst[j].split(/%%%/);
         if(ansidstr!="") ansidstr+="|";
         ansidstr+='ans'+i1+'_'+j;
-        qststr+="<input type='"+itype+"' id='"+'ans'+i1+'_'+j+ "' value='"+aqst[j]+"' style='width:50px'/>"+
-           aqst[j]+
+        qststr+="<input type='"+itype+"' id='"+'ans'+i1+'_'+j+ "' name='"+aqst[j]+"' style='width:50px'/>"+
+           atmp1[0].replace(/[\[\]]/g,'')+
            "</label><br/>";
       }//endfor
     }//endif
+
     let btnstr='Submit';
     if(functype=='info') btnstr='Continue';
     if(functype=='endcourse') btnstr='Finish';
     bckstr='';
     if(i1>1) bckstr =
        "<button id='btnbk' onclick='goback();'>Back</button>&emsp;&emsp;";
-    
+
     strout+= //!!
       "<div id='qst"+i1+"' style='display:none;'>"+
       //i1 +"/"+alines.length + " "+
      
       //----------------------!!
-      
+
+ 
       aqst[0]
          .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
          .replace(/##(\s+)/g, currpart+'.'+currqst+''+"$1")
@@ -229,49 +250,95 @@ function gencourse(){
          + "<br/>"+
       qststr+ "<br/><br/><br/>"+
       //----------------------!!
-       
+      
       bckstr +
-       
-       
-      "<button id='qbtn"+i1+"' onclick='procans(\"" + functype + "\",\""+ansstr+"\",\""+ansidstr+"\");'>"+btnstr+"</button>" +
-      "</div>";
+      "<button id='qbtn"+i1+"' onclick='procans(\"" + functype + "\",\""+ansstr+"\",\""+ansidstr
+        +"\",\""
+        +( (typeof aqst1[1]!='undefined')
+          ? aqst1[1] : '' ) 
+        +"\",\""
+        +( (typeof aqst1[2]!='undefined')
+          ? aqst1[2] : '' ) 
+          +"\");'>"+btnstr+"</button>" +
+      "</div>"; 
+
   }//endfor
   //alert(appref);
   dv1.innerHTML=strout;
   document.getElementById('qst'+currqst).style.display='block';
+  
+}catch(e){
+  alert(e.message);
 }
+
+}//endfunc
 //--------------------------------------
-function procans(ptype, pans, pansid){
+function procans(ptype, pans, pansid, pwrngmsg='', predir=''){
+try{
+  alert(ptype);
 if(ptype=='info'){
   //alert(256);
    incrlevel(); //currqst++; //!!
 }else {
   //alert(pans);
-  //alert(pansid);
+  alert(pansid);
   const aansid=pansid.split(/\|/);
   const aans=pans.split(/\|/);
   let bnextq = true;
+  gmtotqstn++;
+  let wrngmsg='';
   for(i in aansid){
     const obj = document.getElementById(aansid[i]);
+    const atmp1=obj.name.split(/%%%/);
     if(ptype=="fillblanks"){
       if(obj.value  != aans[i]){
-         alert("Your answer '"+obj.value+"' is incorrect.");
+         //alert("xYour answer '"+obj.value+"' is incorrect.");
+         if(typeof atmp1[1]!='undefined')
+           wrngmsg+=atmp1[1]+'\n';
          bnextq = false;
       }
     }else if(ptype=="multiselect"){
       if(String(obj.checked) != String(aans[i])){
-        alert("Your answer"+
+        
+        //alert(obj.id+'___'+aansid[i]+'_____'+obj.value);
+         if(typeof atmp1[1]!='undefined')
+           wrngmsg+=atmp1[1]+'\n';       
+        /* alert("Your answer"+
      String(obj.checked)+"____"+String(aans[i])+
-         " '"+obj.value+"' is incorrect.");
-         bnextq = false;
+         " '"+obj.value+"' xis incorrect."); */
+         bnextq = false; 
       }
     }
   }//endfor
   if(bnextq){
-    alert("Well done! Your answer was correct!");
+    alert("xWell done! Your answer was correct!");
+    gmtotrght++; dbg('CORRECTANS');
     incrlevel(); //currqst++; //!!
+  }else {
+    gmtotwrng++; dbg('INCORRECTANS');
+    //currqst=1;
+    //currpart=1;
+    //currsect=1;;
+    if(wrngmsg.trim()){
+      alert(wrngmsg.trim());
+    }else {
+      alert('Your answer was incorrect');
+    }
+    if(pwrngmsg){
+      alert(pwrngmsg);
+    }
+    if(predir){
+      const aredir=predir.split(/%%/);
+      alert(predir);
+      startsection(aredir[0],
+          Number(aredir[1]),
+          Number(aredir[2]));
+    }
   }
 }//endif
+}catch(e){
+  alert(e.message);
+}
   gencourse();
 }//endfunc
 //--------------------------------------
@@ -412,16 +479,16 @@ try{
 }
 }//endfunc
 //--------------------------------------
-function startsection(psection){
+function startsection(psection,pcurrpart=1,pcurrqst=1){
 //alert(psection);
 try{
   //alert(2);
-  currqst=1;
-  currpart=1;
-  startqst=1;
+  currqst=pcurrqst;
+  currpart=pcurrpart;
+  startqst=pcurrqst;
   sectionfldr=psection;
   //currsectname=pname;
-//dbg(currsectname);
+dbg(468);
    loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart)+'.js', loadedjs);
    
   //alert(33);
@@ -435,18 +502,26 @@ function dbg(pstr,pstr1='',pstr2='',) {
   const regex = /^(.*)\((.*):(\d+):(\d+)\)$/
   const match = regex.exec(e.stack.split("\n")[2]);
   
-  alert('['+match[1].trim()+': l.'+match[3]+']\n'
+  alert(
+  //dvstat.innerHTML =
+  '['+match[1].trim()+': l.'+match[3]+']\n'
    +'coursefldr='+coursefldr+' ;'
-   +'totsects='+totsects+' ;'
-   +'totparts='+totparts+' ;'
-   +'currsect='+currsect+' ;'
-   +'currpart='+currpart+' ;'
-   +'currqst='+currqst+' ;'
-      +pstr+'___'+pstr1); //e.stack.split("\n")[2];
+   +'totsects='  +totsects +'; '
+   +'totparts='  +totparts +'; \n'
+   +'sectionfldr='  +sectionfldr +'; '
+   +'currsect='  +currsect +'; '
+   +'currpart='  +currpart +'; '
+   +'currqst='   +currqst  +'; \n'
+   +'gmtotqstn=' +gmtotqstn+'; '
+   +'gmtotrght=' +gmtotrght+'; '
+   +'gmtotwrng=' +gmtotwrng+'; '
+   +pstr+'___'+pstr1 //; 
+  ); 
 }
 
 
 //--------------------------------------
+//alert(8888);
 //--------------------------------------
 //--------------------------------------
 //--------------------------------------
