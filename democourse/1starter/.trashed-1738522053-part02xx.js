@@ -20,4 +20,4 @@ Quiz<br/>\
 ##1 This is further information on how to use this application\n\
 ";
 
-alert(part01);
+//alert(part01);

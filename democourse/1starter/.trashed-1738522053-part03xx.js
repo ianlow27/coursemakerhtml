@@ -16,4 +16,4 @@ part03="{Demonstration Course for CourseMakerHTML by Fred Bloggs}\
 ##1 This is further information on how to use this application\n\
 ";
 
-alert(part01);
+//alert(part01);
