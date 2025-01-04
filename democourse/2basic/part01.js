@@ -1,3 +1,5 @@
+
+lesson01xx="test%%%wrong%%%1starter%%1%%1|[a]|b|c\n";
 lesson01=""
 +"<b>Creating a new course</b><br/><br/>\
 ##1 In the {{coursemakerhtml}} folder create a folder with your project codename e.g. '''testcourse'''.  This should be letters and/or numbers only. >>\
@@ -35,26 +37,27 @@ part01="\
 
 +lesson01
 +lesson02
-+lesson03;
++lesson03
 
 +"\
 \
-##1 Fill in the blanks:|The week begins on [Monday] followed by [Tuesday]. \n\
+##1 Example Question 1 of 5:>>Fill in the blanks:|The week begins on [Monday] followed by [Tuesday]. \n\
 \
 \
 \
-##2 The week starts on...|Thursday|[Monday]|Saturday\n\
+##2 Example Question 2 of 5:>>The week starts on...|Thursday|[Monday]|Saturday\n\
 \
 \
 \
-##3 Which of the following are weekdays?|[Thursday]|[Monday]|Saturday \n\
+##3 Example Question 3 of 5:>>Which of the following are weekdays?|[Thursday]|[Monday]|Saturday \n\
 \
 \
 \
-##4 Which of the following are weekends? %%% Unfortunately your answer was incorrect.|Thursday |Monday | [Saturday] \n\
+##4 Example Question 4 of 5 (Custom message displays on wrong answer):>>Which of the following are weekends? %%% Unfortunately your answer was incorrect.|Thursday |Monday | [Saturday] \n\
 \
 \
 \
-Which of the following are summer months?%%% Unfortunately your answer was incorrect. You will now be directed to page 1 of part 1 of the Basic section. %%%2basic%%1%%1|[July] |[August] | April \n";
+##5 Example Question 5 of 5 (Custom message displays and redirection occurs on wrong answer):>>Which of the following are summer months?%%% Unfortunately your answer was incorrect. You will now be directed to page 1 of part 1 of the Starter section. %%%1starter%%1%%1|[July] |[August] | April \n";
 
-alert('loaded!basic>>' + part01);
+
+//alert('loaded!basic>>' + part01);

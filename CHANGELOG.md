@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.7_250104-1929 - Additional bugfixes and amendments to the democourse help contents. Also updated README.md with additional help instructions.
+-  Amendments as per the release description
+
 ## 0.0.6_250104-1125 - Additional enhancements
 -  Additional enhancements
 

@@ -1,4 +1,5 @@
 
+
 lesson01=""
 +"<b>Basics</b><br/><br/>\
 ## This is an introduction on how to use this application called {{CourseMakerHTML}}. You can create  a number of different {{courses}} and {{text-based adventure games}} that contain video, audio, and image content, but each course or game needs to exist as separate subfolders under the main app directory. Click on the {{Continue}} buton below to begin creating a new course or text-based adventure game: >> \
@@ -6,8 +7,7 @@ lesson01=""
 {{Appeal for support:}} Please note that this project requires time and effort. If you like what you see and wish to support what I am doing please visit my site at {{buymeacoffee.com/ianlow}}. Thank you so much!\n";
 
 
-
-const lesson2=""
+lesson2=""
 +"<b>Creating a new course</b><br/><br/>\
 ##1 In the {{coursemakerhtml}} folder create a folder with your project codename e.g. '''testcourse'''.  This should be letters and/or numbers only. >>\
 ##2 Under the '''testcourse''' folder create subfolders for each section in your course, e.g. '''stage1''', '''stage2''', '''stage3''', '''etc'''. These should be letters and/or numbers only. >>\
@@ -15,7 +15,7 @@ const lesson2=""
 ##4 Each file should contain 1 string assignment statement that assigns the content of each subpart to the course. Double quotes (\"...\") should be used to enclose the entire content string. The assignment should be to a variable name that has the same name as the file without the suffix. Therefore part05.js should contain the statement {{part05=\"...\";}}. This should be just an assignment and not a declaration i.e. without the let, const, or var keyboards as these variables have already been declared. \n";
 
 
-const lesson3=""
+lesson3=""
 +"<b>Creating and formatting a part content</b><br/><br/>\
 The following elementss can be used to create and format content for each part of a course section: >>\
 ##1 Ultimately everything is rendered into HTML so HTML code can be used directly e.g. {{part05=\"&lt;b&gt;Introduction&lt;/b&gt;&lt;br/&gt;&lt;li&gt;This is an example line&lt;/li&gt;\"; }} >>\
@@ -28,7 +28,7 @@ The following elementss can be used to create and format content for each part o
 ##8 To insert a .mp4 video, .mp3 audio, or .jif .png or .jpg image file simply copy the file into the section subfolder and insert the filename inside curly brackets e.g.>>{{part05=\"&lt;b&gt;Introduction\"+ >>\"&lt;/b&gt;&lt;br/&gt;&lt;li&gt;This is an example video\"+ >>\"&lt;/li&gt; &lcub;some-video.mp4&rcub;\"+ \"; }} \n";
 
 
-const lesson4="{{Creating quiz questions}} >>\
+lesson4="{{Creating quiz questions}} >>\
 ## A quiz question can be one of three types: {{1) Fill in the blanks, 2) Multiple choice, or 3) Multiple selection}}. However for all three types, the pipe symbol &VerticalLine; is used as the field separator, the first field is always the question, and the line always ends with '\\n'. >>\
 ##1 For a {{Fill in the blanks question}}, there are only two fields. However, one can have an indefinite number of blanks for fields. The answer simply needs to be surrounded by square brackets e.g.>>'{{Fill in the blanks:&VerticalLine;The week begins on [Monday] followed by [Tuesday]. \\n}}' >>\
 ##2 For a {{Multiple choice question}}, one simply separates the multiple choices using the pipe symbol, using square brackets to indicate the correct answer e.g. >> '{{The week starts on &VerticalLine;Thursday&VerticalLine;[Monday]&VerticalLine;Saturday \\n}}' >>\
@@ -46,4 +46,4 @@ part01="\
 +"\
 ";
 
-alert('loaded!1>>'+part01);
+//alert('loaded!1>>'+part01);

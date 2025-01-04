@@ -43,7 +43,7 @@ button {font-size:80%;}
 <div id='dvscr'></div>
 <div id='dvstat'></div>
 <center>
-<b>CourseMakerHTML</b> 0.0.6_250104-1125<br/>
+<b>CourseMakerHTML</b> 0.0.7_250104-1929<br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 <i><span id='h6part' style='text-decoration:italic;'></span></i>
 <br/><span id='h3part' style='font-weight:bold;font-size:128%;'></span> <!-- !! -->
@@ -104,7 +104,7 @@ function loadjs(psectionfldr, pcurrpart){
 //dbg(jsfile);
 const jsfile='./'+coursefldr+'/'+psectionfldr+'/part'+sprintf0d(2,pcurrpart)+'.js';
     const scriptobj = document.createElement('script');
- alert(jsfile);
+ //alert(jsfile);
     scriptobj.src = jsfile;
     scriptobj.id='scr_'+psectionfldr+'_'+pcurrpart;
     scriptobj.onload = loadedjs;
@@ -154,7 +154,7 @@ try{
 //alert(2);
     showlandingpg();
   }else {
-alert('121>>Loaded!!!');
+//alert('121>>Loaded!!!');
     gencourse();//<===!!!!!!!!!!!!!
   }
 }catch(e){
@@ -164,10 +164,10 @@ alert('121>>Loaded!!!');
 //=============================
 //alert('1335'+currpart);
 
-alert('currpart__'+currpart);
+//alert('currpart__'+currpart);
 
 try{
-  alert(sectionfldr+'___'+currpart);
+  //alert(sectionfldr+'___'+currpart);
   loadjs(sectionfldr, currpart);
   //loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart)+'.js', loadedjs);
   //loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart+1)+'.js', loadedjs);
@@ -551,8 +551,8 @@ function dbg(pstr,pstr1='',pstr2='',) {
   const regex = /^(.*)\((.*):(\d+):(\d+)\)$/
   const match = regex.exec(e.stack.split("\n")[2]);
   
-  alert(
-  //dvstat.innerHTML =
+  //alert(
+  dvstat.innerHTML =
   '['+match[1].trim()+': l.'+match[3]+']\n'
    +'coursefldr='+coursefldr+' ;'
    +'totsects='  +totsects +'; '
@@ -564,8 +564,8 @@ function dbg(pstr,pstr1='',pstr2='',) {
    +'gmtotqstn=' +gmtotqstn+'; '
    +'gmtotrght=' +gmtotrght+'; '
    +'gmtotwrng=' +gmtotwrng+'; '
-   +pstr+'___'+pstr1 //; 
-  ); 
+   +pstr+'___'+pstr1 ; 
+  // ); 
 }
 
 
