@@ -1,6 +1,4 @@
-
-lesson01="test%%%wrong%%%1starter%%1%%1|[a]|b|c\n";
-lesson01xx=""
+lesson01=""
 +"<b>Creating a new course</b><br/><br/>\
 ##1 In the {{coursemakerhtml}} folder create a folder with your project codename e.g. '''testcourse'''.  This should be letters and/or numbers only. >>\
 ##2 Under the '''testcourse''' folder create subfolders for each section in your course, e.g. '''stage1''', '''stage2''', '''stage3''', '''etc'''. These should be letters and/or numbers only. >>\
@@ -36,10 +34,9 @@ part01="\
 "
 
 +lesson01
-//+lesson02
-//+lesson03;
++lesson02
++lesson03;
 
-/*
 +"\
 \
 ##1 Fill in the blanks:|The week begins on [Monday] followed by [Tuesday]. \n\
@@ -59,6 +56,5 @@ part01="\
 \
 \
 Which of the following are summer months?%%% Unfortunately your answer was incorrect. You will now be directed to page 1 of part 1 of the Basic section. %%%2basic%%1%%1|[July] |[August] | April \n";
-*/
 
 alert('loaded!basic>>' + part01);

@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.6_250104-1125 - Additional enhancements
+-  Additional enhancements
+
 ## 0.0.5_250104-1051 - Added usage information in the demo course and use of coursedata.js for the definition of a specific course.
 -  Added usage information in the demo course and use of coursedata.js for the definition of a specific course.
 
