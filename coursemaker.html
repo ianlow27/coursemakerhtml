@@ -4,23 +4,57 @@ let coursedesc='';
 let coursefldr='';
 let sectionfldr='';
 let sectionlist="";
+let lngcontinue='Continue';
+let lngcurrency='dollars';
+let lngsteps='Steps';
+let lngstepsleft='Steps left';
+let lngtotscore='Total score';
+let lngcrncysym='$';
+let maxsteps=5;
+let gmtotqstn=0;
+let gmtotrght=0;
+let gmtotwrng=0;
+let lngtotqstn='Total questions';
+let lngtotrght='Right';
+let lngtotwrng='Wrong';
+let currsteps=0;
+let currmoney=0;
+let currscore=0;
 let lesson01='';let lesson02='';let lesson03='';let lesson04='';let lesson05='';let lesson06='';let lesson07='';let lesson08='';let lesson09='';
 let lesson10='';let lesson11='';let lesson12='';let lesson13='';let lesson14='';let lesson15='';let lesson16='';let lesson17='';let lesson18='';let lesson19='';
 let lesson20='';let lesson21='';let lesson22='';let lesson23='';let lesson24='';let lesson25='';let lesson26='';let lesson27='';let lesson28='';let lesson29='';
 let lesson30='';let lesson31='';let lesson32='';let lesson33='';let lesson34='';let lesson35='';let lesson36='';let lesson37='';let lesson38='';let lesson39='';let lesson40='';let lesson41='';let lesson42='';let lesson43='';let lesson44='';let lesson45='';let lesson46='';let lesson47='';let lesson48='';let lesson49='';let lesson50='';
+
 </script>
-<script src='./coursedata.js'></script>
+<!-- script src='./coursedatax.js'></script -->
+<!-- script src='./coursedata1.jsx'></script -->
 <script>
-//-----------------------------------
-let startqst=1; //0;//2; //2;// 0;
-let asections=Array(); 
+//---------------------------------------
+//--------------------------------------
+function sections1(){
+try{
 const atmpsects=sectionlist.split(/%%%/);
 for(i in atmpsects){
   const atmp1=atmpsects[i].split(/\|/);
   asections[atmp1[1]]=atmp1[0];
 }//endfor
 //alert(22);
-//==========================================
+}catch(e){
+  dbgx(e.message);
+}
+}
+let startqst=1; //0;//2; //2;// 0;
+let asections=Array(); 
+sections1(); 
+/*
+const atmpsects=sectionlist.split(/%%%/);
+for(i in atmpsects){
+  alert(atmpsects[i]);
+  const atmp1=atmpsects[i].split(/\|/);
+  asections[atmp1[1]]=atmp1[0];
+}//endfor 
+*/
+//=======================================
 let currpartid=0;
 let prevpartid=0;
 const appref='coursemakerhtml_'+coursefldr+'_'+sectionfldr+'_';
@@ -30,9 +64,10 @@ let part20='';let part21='';let part22='';let part23='';let part24='';let part25
 let part30='';let part31='';let part32='';let part33='';let part34='';let part35='';let part36='';let part37='';let part38='';let part39=''; let part40='';let part41='';let part42='';let part43='';let part44='';let part45='';let part46='';let part47='';let part48='';let part49='';let part50='';
 //!!
 //alert(46);
+//----------------------------------
 </script>
-
 <style>
+pre  {font-family: Times New Roman;white-space:pre-wrap;xfont-size:70%;word-wrap:break-word;margin:0px;padding:0px;width:98%;} /*!!*/
 textarea {font-size:80%;}
 button {font-size:80%;}
 </style> 
@@ -40,10 +75,17 @@ button {font-size:80%;}
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
 <body id='bd1' style='padding:6px;font-size:80%;font-family:Times New Roman;xcolor:white;background-color:#efefea;'>
-<div id='dvscr'></div>
+<div id='dvscript'></div>
+<div id='dvscore'></div>
 <div id='dvstat'></div>
 <center>
-<b>CourseMakerHTML</b> 0.0.7_250104-1929<br/>
+<dialog id='dlg1' style='margin-top:0px;width:98%;'>
+  <button autofocus onclick='dlg1cls();'>Close</button>
+  <pre id='prdlg1'></pre>
+</dialog>
+</center>
+<center>
+<b>CourseMakerHTML</b> 0.0.0_ymd-Hi<br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 <i><span id='h6part' style='text-decoration:italic;'></span></i>
 <br/><span id='h3part' style='font-weight:bold;font-size:128%;'></span> <!-- !! -->
@@ -61,12 +103,6 @@ let currpartname='';
 let currqst=1;
 let totparts=0;
 let totsects=0;
-
-let gmtotqstn=0;
-let gmtotrght=0;
-let gmtotwrng=0;
-
-
 //alert(sprintf0d(2, currpart));
 //if(localStorage.getItem(appref+'tx1')==null){
 //  localStorage.setItem(appref+'tx1', eval('part'+sprintf0d(2,currpart)) );
@@ -81,10 +117,12 @@ h3part=document.getElementById('h3part'); //!!
 btn1=document.getElementById('btn1');
 dvstat=document.getElementById('dvstat');
 bd1=document.getElementById('bd1');
-dvscr=document.getElementById('dvscr');
-tx1.value=eval('part'+sprintf0d(2, currpart)); //localStorage.getItem(appref+'tx1');
+dvscript=document.getElementById('dvscript');
+dvscore=document.getElementById('dvscore');
+//localStorage.getItem(appref+'tx1');
 let alines1 = Array(); //tx1.value.split(/\n/);
 let alines = Array();
+
 //=============================
 //alert(31);
 //let loadjs=function(jsfile, onloadfunc){
@@ -102,23 +140,25 @@ dbg(jsfile);
 
 function loadjs(psectionfldr, pcurrpart){
 //dbg(jsfile);
-const jsfile='./'+coursefldr+'/'+psectionfldr+'/part'+sprintf0d(2,pcurrpart)+'.js';
-    const scriptobj = document.createElement('script');
+  const jsfile='./'+coursefldr+'/'+psectionfldr+'/part'+sprintf0d(2,pcurrpart)+'.js';
+  //const jsid='scr_'+psectionfldr+'_'+pcurrpart;
+  loadjsfile(jsfile); //, jsid);
+}//endfunc
+
+function loadjsfile(jsfile){
+    const scriptobj=document.createElement('script');
  //alert(jsfile);
     scriptobj.src = jsfile;
-    scriptobj.id='scr_'+psectionfldr+'_'+pcurrpart;
+    scriptobj.id='src_'+(jsfile.replace(/\./g,'').replace(/\//g,'_'));
     scriptobj.onload = loadedjs;
     scriptobj.onreadystatechange = loadedjs;
-    dvscr.appendChild(scriptobj);
+    dvscript.appendChild(scriptobj);
 }//;//endfunc
-
 //---------------
 function unloadjs(psectionfldr, pcurrpart){
 dbg(101);
 try{
-  
-  
-const parent = document.getElementById("dvscr");
+const parent = document.getElementById("dvscript");
 const child = document.getElementById('scr_'+psectionfldr+'_'+pcurrpart);
 const throwawayNode = parent.removeChild(child);
 
@@ -136,11 +176,15 @@ const throwawayNode = parent.removeChild(child);
   delete prevpart;
   */
 }catch(e){
-  alert('>>e:'+e.message);
+  dbg('>>e1:'+e.message);
 }
 }//endfunc
 //----------------
 let loadedjs=function(){
+try{
+  //sections1();
+  
+  
 dbg(totparts,currpart);
   totparts=currpart; 
   if(eval('part'+sprintf0d(2,currpart+1))!=''){
@@ -149,7 +193,7 @@ dbg(totparts,currpart);
   //alert(loadedtest1());
   currqst=startqst;
 //alert(1+'____'+currpart);
-try{
+//try{
   if(!currqst){
 //alert(2);
     showlandingpg();
@@ -158,15 +202,19 @@ try{
     gencourse();//<===!!!!!!!!!!!!!
   }
 }catch(e){
-  alert('>>e:'+e.message);
+  dbg('>>e2:'+e.message);
 }
 };//endfunc
 //=============================
 //alert('1335'+currpart);
 
 //alert('currpart__'+currpart);
+loadjsfile('./coursedata.js');
+setTimeout('loadfiles()',1000);
 
+function loadfiles(){
 try{
+  //loadjsfile('./coursedata.js');
   //alert(sectionfldr+'___'+currpart);
   loadjs(sectionfldr, currpart);
   //loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart)+'.js', loadedjs);
@@ -175,19 +223,19 @@ try{
 }catch(e){
   dbg(e.message);
 }
-
+}
 //=============================
 //=============================
 function gencourse(){
-
+tx1.value='jhfgg'; //eval('part'+sprintf0d(2, currpart)); 
 try{
  dbg(144);
   if(!initgencourse()) return; //!!
- dbg(146);
+
   //localStorage.setItem(appref+'tx1', tx1.value);
   tx1.style.display='none';
   btn1.style.display='none';
- 
+  dbg(146);
   let strout='';
  
   for(i in alines){
@@ -268,7 +316,7 @@ try{
     }//endif
 
     let btnstr='Submit';
-    if(functype=='info') btnstr='Continue';
+    if(functype=='info') btnstr=lngcontinue;
     if(functype=='endcourse') btnstr='Finish';
     bckstr='';
     if(i1>1) bckstr =
@@ -279,8 +327,6 @@ try{
       //i1 +"/"+alines.length + " "+
      
       //----------------------!!
-
- 
       aqst[0]
          .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
          .replace(/##(\s+)/g, currpart+'.'+currqst+''+"$1")
@@ -289,12 +335,16 @@ try{
          .replace(/\}\}/g, '</b>')
          .replace(/>>/g, '<br/>')
          .replace(/\{([a-z0-9]+)\.mp4\}/g, "<video controls width='96%' controlslist='nofullscreen nodownload noremoteplayback noplaybackrate foobar' ><source src='./"+coursefldr+"/"+sectionfldr+"/$1.mp4' type='video/mp4' /></video>")
+     .replace(/\{([a-z0-9]+)\.(png|gif|jpg)\}/g, 
+"<center><img style='max-width:96%;max-height:150px;xtext-alignment:center;' src='./"+coursefldr+"/"+sectionfldr+"/$1.$2' ' ></img></center>")
          + "<br/>"+
-      qststr+ "<br/><br/><br/>"+
+      qststr+ "<br/>"+
       //----------------------!!
       
       bckstr +
-      "<button id='qbtn"+i1+"' onclick='procans(\"" + functype + "\",\""+ansstr+"\",\""+ansidstr
+      "<button id='qbtn"+i1+"' onclick='procans(\"" + functype 
+        + "\",\""+ansstr
+        +"\",\""+ansidstr
         +"\",\""
         +( (typeof aqst1[1]!='undefined')
           ? aqst1[1] : '' ) 
@@ -307,20 +357,23 @@ try{
   }//endfor
   //alert(appref);
   dv1.innerHTML=strout;
+   dbg('qst'+currqst);
   document.getElementById('qst'+currqst).style.display='block';
   
 }catch(e){
-  alert('>>e:'+e.message);
+  dbg('>>e3:'+e.message);
 }
 
 }//endfunc
 //--------------------------------------
-function procans(ptype, pans, pansid, pwrngmsg='', predir=''){
+function procans(ptype, pans, 
+pansid, pcrrctmsg='', pincrrmsg=''){
+  let redirstr='';
 try{
   //alert(ptype);
 if(ptype=='info'){
   //alert(256);
-   incrlevel(); //currqst++; //!!
+   incrlevel(); //currqst++;
 }else {
   //alert(pans);
   //alert(pansid);
@@ -328,60 +381,79 @@ if(ptype=='info'){
   const aans=pans.split(/\|/);
   let bnextq = true;
   gmtotqstn++;
-  let wrngmsg='';
+  
   for(i in aansid){
     const obj = document.getElementById(aansid[i]);
-    const atmp1=obj.name.split(/%%%/);
     if(ptype=="fillblanks"){
       if(obj.value  != aans[i]){
-         //alert("xYour answer '"+obj.value+"' is incorrect.");
-         if(typeof atmp1[1]!='undefined')
-           wrngmsg+=atmp1[1]+'\n';
-         bnextq = false;
+        bnextq = false;
       }
     }else if(ptype=="multiselect"){
       if(String(obj.checked) != String(aans[i])){
-        
-        //alert(obj.id+'___'+aansid[i]+'_____'+obj.value);
-         if(typeof atmp1[1]!='undefined')
-           wrngmsg+=atmp1[1]+'\n';       
-        /* alert("Your answer"+
-     String(obj.checked)+"____"+String(aans[i])+
-         " '"+obj.value+"' xis incorrect."); */
          bnextq = false; 
       }
     }
   }//endfor
+ 
+  let strmsg='';
+
   if(bnextq){
-    alert("Well done! Your answer was correct!");
+    strmsg+="Well done! Your answer was correct!\n";
+    if(pcrrctmsg.trim()){
+      const atmp2=pcrrctmsg.split(/#/);
+      strmsg+=atmp2[0]+'\n';
+      for(let i in atmp2){
+        if(atmp2[i].match(/\+/)){
+          if(atmp2[i].substr(0,10)
+             =='currmoney+'){
+             currmoney+=Number(
+               atmp2[i].substr(10));
+          }else if(atmp2[i].substr(0,10)
+             =='currscore+'){
+             currscore+=Number(
+               atmp2[i].substr(10));
+          }
+        }
+      }//endfor
+    }
     gmtotrght++; dbg('CORRECTANS');
     incrlevel(); //currqst++; //!!
   }else {
+    strmsg+='Your answer was incorrect\n';
+    if(pincrrmsg.trim()){
+      const atmp2=pincrrmsg.split(/#/);
+      strmsg+=atmp2[0];
+      for(let i in atmp2){
+        //alert(atmp2[i]);
+        if(atmp2[i].match(/\-/)){
+          if(atmp2[i].substr(0,10)
+             =='currmoney-'){
+             currmoney-=Number(
+               atmp2[i].substr(10));
+          }else if(atmp2[i].substr(0,10)
+             =='currscore-'){
+             currscore-=Number(
+               atmp2[i].substr(10));
+          }
+        }else if(atmp2[i].substr(0,6)=='redir='){
+          redirstr=atmp2[i].substr(6);
+        }
+      }//endfor
+    }//endif 
     gmtotwrng++; dbg('INCORRECTANS');
-    //currqst=1;
-    //currpart=1;
-    //currsect=1;;
-    if(wrngmsg.trim()){
-      alert('>>1'+wrngmsg.trim());
-    }else {
-      alert('Your answer was incorrect');
-    }
-    if(pwrngmsg){
-      alert('>>2'+pwrngmsg);
-    }
-    if(predir){
-      const aredir=predir.split(/%%/);
-      //alert(predir);
-      startsection(aredir[0],
-          Number(aredir[1]),
-          Number(aredir[2]));
-    }
-  }
+  }//endif bnextq
+  msgout(strmsg);
 }//endif
 }catch(e){
-  alert('>>e:'+e.message);
+  dbg('>>e4:'+e.message);
 }
-  gencourse();
+  if(redirstr){
+    const aredir=redirstr.split(/\^/);
+    startsection(aredir[0],
+       Number(aredir[1]),
+       Number(aredir[2]));
+  }
+  setTimeout('gencourse()', 0);
 }//endfunc
 //--------------------------------------
 function goback(){ //!!
@@ -423,6 +495,7 @@ function sprintf0d(pwidth=2, pval=0){ //!!
 }
 //--------------------------------------
 function initgencourse(){ //!!
+updscores(currsteps+1);
 dbg('386>>part'+sprintf0d(2, currpart));
 tx1.value=eval('part'+sprintf0d(2, currpart));
 //currqst=1;
@@ -489,7 +562,7 @@ if(!currqst){
 //====================================
 //====================================
 }catch(e){
-  alert('>>e:'+e.message);
+  dbg('>>e5:'+e.message);
 }
 return 1;
 }//endfunc
@@ -517,7 +590,7 @@ try{
   dv1.innerHTML=strout;
   return 0;
 }catch(e){
-  alert('>>e:'+e.message);
+  dbg('>>e6:'+e.message);
 }
 }//endfunc
 //--------------------------------------
@@ -526,10 +599,7 @@ dbg(psection);
 try{
   unloadjs(sectionfldr, currpart);
   //alert(2);
-  
   part01='';
-  
-  
   currqst=pcurrqst;
   currpart=pcurrpart;
   startqst=pcurrqst;
@@ -542,17 +612,21 @@ dbg(468);
    
   //alert(33);
 }catch(e){
-  alert('>>e:'+e.message);
+  dbg('>>e7:'+e.message);
 }
 }//endfunc
 //--------------------------------------
-function dbg(pstr,pstr1='',pstr2='',) {
+function dbgx(pstr,pstr1='',pstr2='',) {
+  dbg(pstr,pstr1,pstr2,'x');
+}//endfunc
+//--------------------------------------
+function dbg(pstr,pstr1='',pstr2='',px='') {
+  //dvstat.style.display = 'none';
   const e = new Error();
   const regex = /^(.*)\((.*):(\d+):(\d+)\)$/
   const match = regex.exec(e.stack.split("\n")[2]);
   
-  //alert(
-  dvstat.innerHTML =
+  const msg =
   '['+match[1].trim()+': l.'+match[3]+']\n'
    +'coursefldr='+coursefldr+' ;'
    +'totsects='  +totsects +'; '
@@ -565,11 +639,54 @@ function dbg(pstr,pstr1='',pstr2='',) {
    +'gmtotrght=' +gmtotrght+'; '
    +'gmtotwrng=' +gmtotwrng+'; '
    +pstr+'___'+pstr1 ; 
+  if(px){
+    alert(msg);
+  }else{
+    dvstat.innerHTML = msg;
+  }
   // ); 
 }
+//------------------
+function updscores(pcurrsteps=null){
+  //dbgx(pcurrsteps);💵
+  if(pcurrsteps) currsteps=pcurrsteps;
+  else currsteps++;
+  let strout="<span style='background-color:#ffffca;'>"
+  
+     +lngtotqstn+'💯: '+gmtotqstn+ '|'
+     +lngtotrght+'✅: '+gmtotrght+ '|'
+     +lngtotwrng+'❌: '+gmtotwrng+ '|'
+  
+     +lngsteps+'👣: '+currsteps + '|'
+     +lngstepsleft+'🎯: '+(Number(maxsteps) +Number(0-currsteps)) + '|'
+     +lngcurrency+'🪙: '+lngcrncysym+currmoney + '|'
+     +lngtotscore+'💯: '+currscore + '|</span>'
+     ;
+  dvscore.innerHTML=strout;
 
-
-//--------------------------------------
+}//endfunc
+//------------------
+function msgout(pmsg){ 
+  dlg1 = document.getElementById('dlg1');
+  prdlg1.innerHTML = pmsg;
+  dlg1.showModal();
+}//endfunc
+//------------------
+function dlg1cls(){ 
+  dlg1 = document.getElementById('dlg1');
+  dlg1.close();
+}//endfunc
+//------------------
+//------------------
+//------------------
+//------------------
+//------------------
+//------------------
+//------------------
+//------------------
+//------------------
+//------------------
+//------------------
 //alert(8888);
 //--------------------------------------
 //--------------------------------------
