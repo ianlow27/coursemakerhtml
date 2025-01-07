@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.9_250107-1019 - Additional enhancements related to language option, dynamic loading of files, etc.
+-  Amendments as per the release description
+
 ## 0.0.8_250106-1943 - Additional amendments
 -  Amendments as per the release description
 

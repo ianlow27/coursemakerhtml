@@ -1,4 +1,5 @@
 <!DOCTYPE html><html><head><script>
+let coursefile='./coursedata.js';
 let coursename='';
 let coursedesc='';
 let coursefldr='';
@@ -10,6 +11,7 @@ let lngsteps='Steps';
 let lngstepsleft='Steps left';
 let lngtotscore='Total score';
 let lngcrncysym='$';
+let lngrestart='Restart';
 let maxsteps=5;
 let gmtotqstn=0;
 let gmtotrght=0;
@@ -24,7 +26,9 @@ let lesson01='';let lesson02='';let lesson03='';let lesson04='';let lesson05='';
 let lesson10='';let lesson11='';let lesson12='';let lesson13='';let lesson14='';let lesson15='';let lesson16='';let lesson17='';let lesson18='';let lesson19='';
 let lesson20='';let lesson21='';let lesson22='';let lesson23='';let lesson24='';let lesson25='';let lesson26='';let lesson27='';let lesson28='';let lesson29='';
 let lesson30='';let lesson31='';let lesson32='';let lesson33='';let lesson34='';let lesson35='';let lesson36='';let lesson37='';let lesson38='';let lesson39='';let lesson40='';let lesson41='';let lesson42='';let lesson43='';let lesson44='';let lesson45='';let lesson46='';let lesson47='';let lesson48='';let lesson49='';let lesson50='';
-
+let startqst=1; //0;//2; //2;// 0;
+let asections=new Array(); 
+let asectparts=new Array(); 
 </script>
 <!-- script src='./coursedatax.js'></script -->
 <!-- script src='./coursedata1.jsx'></script -->
@@ -37,23 +41,16 @@ const atmpsects=sectionlist.split(/%%%/);
 for(i in atmpsects){
   const atmp1=atmpsects[i].split(/\|/);
   asections[atmp1[1]]=atmp1[0];
+  asectparts[atmp1[1]]=Number(atmp1[2]);
+  totsects++;
+  //alert(asections[atmp1[1]]+'='+atmp1[0]);
 }//endfor
 //alert(22);
+  //alert(totsects);
 }catch(e){
   dbgx(e.message);
 }
 }
-let startqst=1; //0;//2; //2;// 0;
-let asections=Array(); 
-sections1(); 
-/*
-const atmpsects=sectionlist.split(/%%%/);
-for(i in atmpsects){
-  alert(atmpsects[i]);
-  const atmp1=atmpsects[i].split(/\|/);
-  asections[atmp1[1]]=atmp1[0];
-}//endfor 
-*/
 //=======================================
 let currpartid=0;
 let prevpartid=0;
@@ -62,14 +59,24 @@ let part01='';let part02='';let part03='';let part04='';let part05='';let part06
 let part10='';let part11='';let part12='';let part13='';let part14='';let part15='';let part16='';let part17='';let part18='';let part19='';
 let part20='';let part21='';let part22='';let part23='';let part24='';let part25='';let part26='';let part27='';let part28='';let part29='';
 let part30='';let part31='';let part32='';let part33='';let part34='';let part35='';let part36='';let part37='';let part38='';let part39=''; let part40='';let part41='';let part42='';let part43='';let part44='';let part45='';let part46='';let part47='';let part48='';let part49='';let part50='';
-//!!
-//alert(46);
+
 //----------------------------------
 </script>
 <style>
 pre  {font-family: Times New Roman;white-space:pre-wrap;xfont-size:70%;word-wrap:break-word;margin:0px;padding:0px;width:98%;} /*!!*/
 textarea {font-size:80%;}
 button {font-size:80%;}
+::backdrop {
+  background-image: linear-gradient(
+    45deg,
+    blue,
+    aliceblue,
+    lightblue,
+    azure
+  );
+  opacity: 0.75;
+}
+
 </style> 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
@@ -79,11 +86,12 @@ button {font-size:80%;}
 <div id='dvscore'></div>
 <div id='dvstat'></div>
 <center>
-<dialog id='dlg1' style='margin-top:0px;width:98%;'>
+<dialog id='dlg1' style='background-color:#685858 margin-top:0px;width:98%;'>
   <button autofocus onclick='dlg1cls();'>Close</button>
   <pre id='prdlg1'></pre>
 </dialog>
 </center>
+
 <center>
 <b>CourseMakerHTML</b> 0.0.0_ymd-Hi<br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
@@ -92,17 +100,26 @@ button {font-size:80%;}
 <br/><span id='h1part' style='font-weight:normal;font-size:110%;'></span> <!-- !! -->
 </center>
 <br/><button id='btn1' style='display:none;' onclick='gencourse();'>Begin</button>
-<div id='dv1' style='font-weight:normal;'></div>
+<div id='dv1' style='font-weight:normal;'>Loading...</div>
 <script>
+//=========================================
+//=========================================
+//=========================================
+//=========================================
+//=========================================
+//=========================================
+//=========================================
 //alert(11111);
 //!!
 let currsect=1;
+let maxsect=1;
 let currsectname='';
 let currpart=1;
 let currpartname='';
-let currqst=1;
+let currqst=0;
 let totparts=0;
 let totsects=0;
+let bshow_en=true;
 //alert(sprintf0d(2, currpart));
 //if(localStorage.getItem(appref+'tx1')==null){
 //  localStorage.setItem(appref+'tx1', eval('part'+sprintf0d(2,currpart)) );
@@ -124,8 +141,6 @@ let alines1 = Array(); //tx1.value.split(/\n/);
 let alines = Array();
 
 //=============================
-//alert(31);
-//let loadjs=function(jsfile, onloadfunc){
 function loadjsxx(jsfile, onloadfunc){
   //prevpartid=currpartid;
   //currpartid++;
@@ -161,15 +176,10 @@ try{
 const parent = document.getElementById("dvscript");
 const child = document.getElementById('scr_'+psectionfldr+'_'+pcurrpart);
 const throwawayNode = parent.removeChild(child);
-
   //if(child.parentNode){
    // child.parentNode.removeChild(child);
   //}
-  
-  
-  
   /*
-  
   let prevpart=document.getElementById('scr_'+psectionfldr+'_'+pcurrpart);
   //const parent1=prevpart.parentNode;
   //parent1.removeChild(prevpart);
@@ -179,21 +189,20 @@ const throwawayNode = parent.removeChild(child);
   dbg('>>e1:'+e.message);
 }
 }//endfunc
-//----------------
+//-----------------------------------
 let loadedjs=function(){
 try{
   //sections1();
-  
-  
 dbg(totparts,currpart);
   totparts=currpart; 
   if(eval('part'+sprintf0d(2,currpart+1))!=''){
     totparts= currpart+1;
   }
   //alert(loadedtest1());
-  currqst=startqst;
+ // if(!currqst) currqst=startqst;
 //alert(1+'____'+currpart);
 //try{
+  
   if(!currqst){
 //alert(2);
     showlandingpg();
@@ -201,33 +210,55 @@ dbg(totparts,currpart);
 //alert('121>>Loaded!!!');
     gencourse();//<===!!!!!!!!!!!!!
   }
+  
 }catch(e){
   dbg('>>e2:'+e.message);
 }
 };//endfunc
 //=============================
-//alert('1335'+currpart);
-
-//alert('currpart__'+currpart);
-loadjsfile('./coursedata.js');
-setTimeout('loadfiles()',1000);
-
+loadjsfile(coursefile); 
+setTimeout('loadfiles()',500);
+//--------------------------------------
 function loadfiles(){
 try{
-  //loadjsfile('./coursedata.js');
-  //alert(sectionfldr+'___'+currpart);
-  loadjs(sectionfldr, currpart);
-  //loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart)+'.js', loadedjs);
-  //loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart+1)+'.js', loadedjs);
-  //alert(33);
+  //initdata();
+  sections1(); 
+//alert(sectionfldr+'_en');
+ // loadjs(sectionfldr+'', currpart);
+
+alert(asectparts[sectionfldr]);
+  for(let i=1; i<=asectparts[sectionfldr]; i++){
+    loadjs(sectionfldr+'', i);
+  }
+  setTimeout('loadedjs2()',500);
 }catch(e){
   dbg(e.message);
 }
-}
+}//endfunc
+//--------------------------------------
+function loadedjs2(){
+
+
+  /*
+sectionfldr='3intermediate';
+maxsect=5;
+currsect=3; 
+currpart=1; 
+currqst=1; 
+  */
+
+  if(!currqst){
+//alert(2);
+    showlandingpg();
+  }else {
+//alert('121>>Loaded!!!');
+    gencourse();//<===!!!!!!!!!!!!!
+  }
+}//endfunc
 //=============================
 //=============================
 function gencourse(){
-tx1.value='jhfgg'; //eval('part'+sprintf0d(2, currpart)); 
+//tx1.value='jhfgg'; //eval('part'+sprintf0d(2, currpart)); 
 try{
  dbg(144);
   if(!initgencourse()) return; //!!
@@ -356,6 +387,8 @@ try{
 
   }//endfor
   //alert(appref);
+  strout="<button id='bt_en' style='visibility:"+(!bshow_en ? 'hidden' : 'visible' )+"' onclick='showtrans();'>EN</button>"
+  +strout;
   dv1.innerHTML=strout;
    dbg('qst'+currqst);
   document.getElementById('qst'+currqst).style.display='block';
@@ -465,13 +498,22 @@ function incrlevel(ptype='qst'){ //!!
   if(ptype=='qst'){
     currqst++;
     if(currqst>(alines.length)){
-      alert('end of part') ;
+      //alert('end of part') ;
       currpart++;
       currqst=1;
-      if(currpart>totparts){
-        currsect++;
+      if(currpart > asectparts[sectionfldr]){ //otparts){
+  alert('end of section');
+        if((currsect==maxsect) 
+          &&(maxsect<=totsects)){
+          currsect++;
+          maxsect++;
+          if(maxsect > totsects){
+            msgout('Congratulations on completing this course!');
+          }
+        }
+     alert('end of section 2');
         showlandingpg();
-        alert('end of course');
+        //alert('end of course');
       }else{
         gencourse();
       }
@@ -495,6 +537,12 @@ function sprintf0d(pwidth=2, pval=0){ //!!
 }
 //--------------------------------------
 function initgencourse(){ //!!
+
+
+//dbgx(asections[sectionfldr]+'__'+(sectionfldr));
+
+
+
 updscores(currsteps+1);
 dbg('386>>part'+sprintf0d(2, currpart));
 tx1.value=eval('part'+sprintf0d(2, currpart));
@@ -519,8 +567,10 @@ for(i in alines1){
     alines.push(alines1[i]);
   }
 }//endfor
+//dbgx(asections[sectionfldr]+'__'+sectionfldr);
 //currsectname=asections[sectionfldr];
 h6part.innerHTML=coursename;
+if(typeof asections[sectionfldr] != 'undefined')
 h3part.innerHTML=asections[sectionfldr];
 h1part.innerHTML='Part '+currpart 
 + ' ('+currqst+'/'+alines.length +')'
@@ -569,6 +619,7 @@ return 1;
 //--------------------------------------
 function showlandingpg(){
 try{
+    alert('end of section 3');
 //alert('currsect_'+currsect);
   h6part.innerHTML=coursename;
   h1part.innerHTML=coursedesc;
@@ -577,17 +628,21 @@ try{
   for(i in asects){
     const atmp1=asects[i].split(/\|/);
     if(strout!='') strout+='<br/>';
-    strout+='<b style="font-size:110%;">'+atmp1[0]+': </b>' + atmp1[2] +  "<div style='text-align:right;'><button style='text-align:right;";
-    if(currsect > i){
+    strout+='<b style="font-size:110%;">'+atmp1[0]+': </b>' + atmp1[3] +  "<div style='text-align:right;'><button style='text-align:right;";
+    if(i < maxsect){
      strout+="'  onclick='startsection( \""+atmp1[1]+"\");'>";// , \""+atmp1[0]+"\");'>";
     }else {
       strout+="color:#bbb'>";
     }
     strout+='Start</button></div>';
   }//endfor
+  if((maxsect > totsects)&&(totsects)){
+    strout+="<button onclick='restart();'>"+lngrestart+"</button>";
+  }
 
   
   dv1.innerHTML=strout;
+    alert('end of section 4');
   return 0;
 }catch(e){
   dbg('>>e6:'+e.message);
@@ -595,7 +650,7 @@ try{
 }//endfunc
 //--------------------------------------
 function startsection(psection,pcurrpart=1,pcurrqst=1){
-dbg(psection);
+//dbgx(psection);
 try{
   unloadjs(sectionfldr, currpart);
   //alert(2);
@@ -604,13 +659,16 @@ try{
   currpart=pcurrpart;
   startqst=pcurrqst;
   sectionfldr=psection;
+  currsect=Number(sectionfldr.substr(0,1));
   //currsectname=pname;
 dbg(468);
-   loadjs(sectionfldr, currpart);
-   if(!part01)    loadjs(sectionfldr, currpart);
-   //loadjs('./'+coursefldr+'/'+sectionfldr+'/part'+sprintf0d(2,currpart)+'.js', loadedjs);
-   
-  //alert(33);
+   //initdata();
+   //loadjs(sectionfldr+'_en', currpart);
+  // if(!part01)   
+//   loadjs(sectionfldr, currpart);
+  loadfiles();
+     
+   //alert(33);
 }catch(e){
   dbg('>>e7:'+e.message);
 }
@@ -632,6 +690,8 @@ function dbg(pstr,pstr1='',pstr2='',px='') {
    +'totsects='  +totsects +'; '
    +'totparts='  +totparts +'; \n'
    +'sectionfldr='  +sectionfldr +'; '
+   +'asctpts[stnf]='+asectparts[sectionfldr]+'; '
+   +'maxsect='  +maxsect +'; '
    +'currsect='  +currsect +'; '
    +'currpart='  +currpart +'; '
    +'currqst='   +currqst  +'; \n'
@@ -677,8 +737,30 @@ function dlg1cls(){
   dlg1.close();
 }//endfunc
 //------------------
+function showtrans(){
+  //document.getElementById('bt_en').style.display='none';
+  bshow_en=false;
+  loadjs(sectionfldr+'_en', currpart);
+  setTimeout("bshow_en=true; loadjs(sectionfldr, currpart)",5000);
+}
 //------------------
+function restart(){
+  maxsect=1;
+  showlandingpg();
+}//endfunc
 //------------------
+function initdata(){
+lesson01='';lesson02='';lesson03='';lesson04='';lesson05='';lesson06='';lesson07='';lesson08='';lesson09='';
+lesson10='';lesson11='';lesson12='';lesson13='';lesson14='';lesson15='';lesson16='';lesson17='';lesson18='';lesson19='';
+lesson20='';lesson21='';lesson22='';lesson23='';lesson24='';lesson25='';lesson26='';lesson27='';lesson28='';lesson29='';
+lesson30='';lesson31='';lesson32='';lesson33='';lesson34='';lesson35='';lesson36='';lesson37='';lesson38='';lesson39='';lesson40='';lesson41='';lesson42='';lesson43='';lesson44='';lesson45='';lesson46='';lesson47='';lesson48='';lesson49='';lesson50='';
+
+part01='';part02='';part03='';part04='';part05='';part06='';part07='';part08='';part09='';
+part10='';part11='';part12='';part13='';part14='';part15='';part16='';part17='';part18='';part19='';
+part20='';part21='';part22='';part23='';part24='';part25='';part26='';part27='';part28='';part29='';
+part30='';part31='';part32='';part33='';part34='';part35='';part36='';part37='';part38='';part39=''; part40='';part41='';part42='';part43='';part44='';part45='';part46='';part47='';part48='';part49='';part50='';
+
+}//endfunc
 //------------------
 //------------------
 //------------------
