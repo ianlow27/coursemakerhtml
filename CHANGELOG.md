@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.10_250111-2312 - Additional enhancements related to user interface and more bugfixes
+-  Amendments as per the release description
+
 ## 0.0.9_250107-1019 - Additional enhancements related to language option, dynamic loading of files, etc.
 -  Amendments as per the release description
 
