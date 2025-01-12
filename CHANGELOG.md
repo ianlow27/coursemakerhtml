@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.11_250112-1911 - Additional enhancements to user interface and bugfixes
+-  Amendments as per the release description
+
 ## 0.0.10_250111-2312 - Additional enhancements related to user interface and more bugfixes
 -  Amendments as per the release description
 

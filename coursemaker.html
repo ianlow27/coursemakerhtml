@@ -1,4 +1,5 @@
 <!DOCTYPE html><html><head><script>
+let bdbgmode=false;
 let coursefile='./coursedata.js';
 let coursename='';
 let coursedesc='';
@@ -92,10 +93,10 @@ button {font-size:80%;}
 </center>
 
 <center>
-<b>CourseMakerHTML</b> 0.0.10_250111-2312<br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.11_250112-1911</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
-<i><span id='h6part' style='text-decoration:italic;'></span></i>
+<i><span id='h6part' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
 <br/><span id='h3part' style='font-weight:bold;font-size:128%;'></span> <!-- !! -->
 <br/><span id='h1part' style='font-weight:normal;font-size:110%;'></span> <!-- !! -->
 </center>
@@ -195,9 +196,14 @@ function loadjsfile(jsfile){
 function unloadjs(psectionfldr, pcurrpart){
 dbg(101);
 try{
+  dvscript.innerHTML="";
+  /*
 const parent = document.getElementById("dvscript");
 const child = document.getElementById('scr_'+psectionfldr+'_'+pcurrpart);
 const throwawayNode = parent.removeChild(child);
+*/
+
+
   //if(child.parentNode){
    // child.parentNode.removeChild(child);
   //}
@@ -239,6 +245,18 @@ dbg(totparts,currpart);
 };//endfunc
 //=============================
 loadjsfile(coursefile); 
+if(!bdbgmode){
+/*dv1.style.display='none';
+h1part=document.getElementById('h1part'); //!!
+h6part=document.getElementById('h6part'); //!!
+h3part=document.getElementById('h3part'); //!!
+btn1
+*/
+dvstat.style.display='none';
+//bd1.style.display='none';
+//dvscript
+dvscore.style.display='none';
+}
 setTimeout('loadsection()',500);
 //--------------------------------------
 function loadfiles(){
@@ -644,6 +662,7 @@ function sprintf0d(pwidth=2, pval=0){ //!!
 function initgencourse(){ //!!
 
 
+
 //dbgx(asections[sectionfldr]+'__'+(sectionfldr));
 
 
@@ -676,11 +695,12 @@ for(i in alines1){
 h6part.innerHTML=coursename;
 
 if(typeof asections[sectionfldr] != 'undefined')
-h3part.innerHTML=asections[sectionfldr];
+h3part.innerHTML='Section ' + asections[sectionfldr];
 
 h1part.innerHTML='Part '+currpart 
-+ ' ('+currqst+'/'+alines.length +')'
-+(currpartname!=''? ': '+currpartname : '')+prg1();
++(currpartname!=''? ': '+currpartname : '')+prg1()
++ '<br/><b><u>Lesson '+currqst+' (of '+alines.length +')</u></b>'
+;
 
 try{
 
@@ -951,7 +971,7 @@ for(let i=0; i<maxsect; i++){
   }
 }
 for(let i=0; i<(totsects - maxsect); i++){
-  prg1+='🟧';
+  prg1+='🟨'; //🟡';
 }
 prg1+='<br/>';
 //----------------------------
@@ -959,15 +979,16 @@ for(let i=0; i<currpart; i++){
   prg1+='🟦'; //🔵';
 }
 for(let i=0; i<(totparts - currpart); i++){
-  prg1+='🟨'; //🟡';
+
+    prg1+='🟧';
 }
 prg1+='<br/>';
 //----------------------------
 for(let i=0; i<currqst; i++){
-  prg1+='🟢';
+  prg1+='🟩';//🟢';
 }
 for(let i=0; i<alines.length - currqst; i++){
-  prg1+='🔴';
+  prg1+='⬜'; //⬛'; //🟥';//🔴';
 }
 prg1+='</div>';
 return prg1;
