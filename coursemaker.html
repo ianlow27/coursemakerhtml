@@ -1,5 +1,6 @@
 <!DOCTYPE html><html><head><script>
-let bdbgmode=false;
+let pgmode='landing';
+let bdbgmode=true; //false;
 let coursefile='./coursedata.js';
 let coursename='';
 let coursedesc='';
@@ -15,6 +16,11 @@ let lngcrncysym='$';
 let lngrestart='Restart';
 let maxsteps=5;
 let gmtotqstn=0;
+/* https://www.prosettings.com/emoji-list/#google_vignette
+💎  🎉  🎯 🏆 💫 💝 💖 🍒 🌟 🚀 ⭐ ✨	
+🏠	🏡  ▶	⏭	⏯	◀  ⏮	
+
+*/
 let gmtotrght=0;
 let gmtotwrng=0;
 let lngtotqstn='Total questions';
@@ -39,7 +45,6 @@ let anum2sect=new Array();
 //---------🔴--------------🟢----------------
 //--------------------------------------
 function sections1(){
- // alert(42);
 try{
   //alert(sectionlist);
 const atmpsects=sectionlist.split(/%%%/);
@@ -63,7 +68,7 @@ for(i in atmpsects){
 //=======================================
 let currpartid=0;
 let prevpartid=0;
-const appref='coursemakerhtml_'+coursefldr+'_'; //+sectionfldr+'_';
+const appref='coursemakerhtml_'+coursefldr+'_';
 let part01='';let part02='';let part03='';let part04='';let part05='';let part06='';let part07='';let part08='';let part09='';
 let part10='';let part11='';let part12='';let part13='';let part14='';let part15='';let part16='';let part17='';let part18='';let part19='';
 let part20='';let part21='';let part22='';let part23='';let part24='';let part25='';let part26='';let part27='';let part28='';let part29='';
@@ -93,7 +98,7 @@ button {font-size:80%;}
 </center>
 
 <center>
-<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.11_250112-1911</span><br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.12_250114-1853</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
 <i><span id='h6part' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
@@ -263,11 +268,6 @@ function loadfiles(){
 try{
   //initdata();
   sections1(); 
-  
-//alert(sectionfldr+'_en');
- // loadjs(sectionfldr+'', currpart);
-
-//alert(asectparts[sectionfldr]);
   for(let i=1; i<=asectparts[sectionfldr]; i++){
     loadjs(sectionfldr+'', i);
   }
@@ -385,14 +385,21 @@ try{
            "</label><br/>";
       }//endfor
     }//endif
-
+//🏠	🏡  ▶	⏭	⏯	◀  ⏮	
     let btnstr='Submit';
-    if(functype=='info') btnstr=lngcontinue;
+    if(functype=='info') btnstr='▶'; lngcontinue;
     if(functype=='endcourse') btnstr='Finish';
-    bckstr='';
-    //if(i1>1)
-    bckstr =
-       "<button id='btnbk' onclick='goback();'>Back</button>&emsp;&emsp;";
+    const bk2lndpg =
+       "<button id='btnbk2lndpg' onclick='showlandingpg();'>🏠</button>&emsp;&emsp;";
+    const toprvprt = (functype!='info') ? "" :
+       "<button id='btn2prvprt' onclick='startsection(sectionfldr,((currpart-1 <=0)?1:currpart-1),1);'>⏮</button>&emsp;&emsp;";
+       
+    const tonxtprt = ( (functype!='info') || (currsect >= maxsect) ) ? "" :
+       "<button id='btn2prvprt' onclick='startsection(sectionfldr,((currpart+1>=totparts)?totparts:currpart+1),1);'>⏭</button>&emsp;&emsp;";
+       
+       
+    const bckstr =
+       "<button id='btnbk' onclick='goback();'>◀</button>&emsp;&emsp;";
 
     strout+= //!!
       "<div id='qst"+i1+"' style='display:none;'>"+
@@ -417,6 +424,8 @@ try{
       qststr+ "<br/>"+
       //----------------------!!
       '<center>'+
+      bk2lndpg +
+      toprvprt +
       bckstr +
       "<button id='qbtn"+i1+"' onclick='procans(\"" + functype 
         + "\",\""+ansstr
@@ -426,10 +435,13 @@ try{
           ? aqst1[1] : '' ) 
         +"\",\""
         +( (typeof aqst1[2]!='undefined')
-          ? aqst1[2] : '' ) 
-          +"\");'>"+btnstr+"</button>" +
+        ? aqst1[2] : '' ) 
+      +"\");'>"+btnstr+"</button>&emsp;&emsp;"+
+          tonxtprt +
          '</center>'+
-      "</div>"; 
+      "</div>"+
+      
+       "" ; 
 
   }//endfor
   //alert(appref);
@@ -439,6 +451,7 @@ try{
   }
   //alert(dv1);
   dv1.innerHTML=strout;
+  pgmode='lesson';
    dbg('qst'+currqst);
   document.getElementById('qst'+currqst).style.display='block';
   
@@ -662,11 +675,6 @@ function sprintf0d(pwidth=2, pval=0){ //!!
 function initgencourse(){ //!!
 
 
-
-//dbgx(asections[sectionfldr]+'__'+(sectionfldr));
-
-
-
 updscores(currsteps+1);
 dbg('386>>part'+sprintf0d(2, currpart));
 tx1.value=eval('part'+sprintf0d(2, currpart));
@@ -747,7 +755,7 @@ function showlandingpg(){
 try{
  loadcurrpos();
  sections1();
-setTimeout("h6part.innerHTML='"+coursename+"'; h1part.innerHTML='"+coursedesc+"'+prg1('showlandingpg'); h3part.innerHTML='';", 800);
+setTimeout("shwlndpghdr();", 800);
   let strout='';
   const asects=sectionlist.split(/%%%/);
   //alert("'./"+coursefldr+"/cover.png'");
@@ -777,22 +785,28 @@ setTimeout("h6part.innerHTML='"+coursename+"'; h1part.innerHTML='"+coursedesc+"'
 
   //alert(strout);
   dv1.innerHTML=strout;
+  pgmode='landing';
     //alert('end of section 4');
   return 0;
 }catch(e){
   dbg('>>e6:'+e.message);
 }
+
 }//endfunc
 //--------------------------------------
 function startsection(psection,pcurrpart=1,pcurrqst=1){
-//dbgx(psection);
+dbg(psection);
 try{
+  //psection=Number(psection);
+  //  pcurrpart=Number(pcurrpart);
+  //  pcurrqst=Number(pcurrqst);
   unloadjs(sectionfldr, currpart);
   //alert(2);
   part01='';
   currqst=pcurrqst;
   currpart=pcurrpart;
   startqst=pcurrqst;
+//sections1();
   sectionfldr=psection;
   currsect=Number(sectionfldr.substr(0,1));
   //currsectname=pname;
@@ -951,6 +965,15 @@ function poptxtvcbwrite(pcurrref=''){
   }
 }//endfunc
 //------------------
+function shwlndpghdr(){
+//alert(pgmode);
+if(pgmode=='landing'){
+  h6part.innerHTML=coursename; 
+  h1part.innerHTML= coursedesc + prg1('showlandingpg'); 
+  h3part.innerHTML='';
+}
+}//endfunc
+//------------------
 function currref(){
   const retval =currsect+'-'+currpart+'-'+currqst;
   //dbgx(retval);
@@ -972,6 +995,10 @@ for(let i=0; i<maxsect; i++){
 }
 for(let i=0; i<(totsects - maxsect); i++){
   prg1+='🟨'; //🟡';
+}
+if((popt=='showlandingpg')){//&&(pgmode=='landing')){
+  prg1+='</div>';
+  return prg1;
 }
 prg1+='<br/>';
 //----------------------------

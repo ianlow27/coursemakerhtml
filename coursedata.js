@@ -1,4 +1,4 @@
-// version: 0.0.11_250112-1911
+// version: 0.0.12_250114-1853
 coursename='Demonstration Course for CourseMakerHTML <br/>by Ian Low';
 coursedesc='This is a test course demonstrating how a course could look like.';
 coursefldr='democourse';

@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.12_250114-1853 - Additional enhancements to user interface including additional navigation buttons
+-  Amendments as per the release description
+
 ## 0.0.11_250112-1911 - Additional enhancements to user interface and bugfixes
 -  Amendments as per the release description
 
