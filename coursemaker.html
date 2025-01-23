@@ -1,6 +1,7 @@
 <!DOCTYPE html><html><head><script>
+let theme='test1';
 let pgmode='landing';
-let bdbgmode=true; //false;
+let bdbgmode=false; //true; //false;
 let coursefile='./coursedata.js';
 let coursename='';
 let coursedesc='';
@@ -38,6 +39,7 @@ let startqst=1; //0;//2; //2;// 0;
 let asections=new Array(); 
 let asectparts=new Array(); 
 let anum2sect=new Array(); 
+let fllblnkvals='';
 </script>
 <!-- script src='./coursedatax.js'></script -->
 <!-- script src='./coursedata1.jsx'></script -->
@@ -82,23 +84,25 @@ textarea {font-size:100%;font-family: Arial;Times New Roman;}
 button {font-size:80%;}
 ::xbackdrop { background-image: linear-gradient( 45deg, grey, aliceblue, lightblue, azure); opacity: 0.40;}
 ::backdrop { background-image: linear-gradient( 0deg, darkgrey, darkgrey, darkgrey, darkgrey); opacity: 0.75;}
+.test1 {background-color:black;color:white;}
+.test2 {background-color:yellow;color:blue;}
 </style> 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
-<body id='bd1' style='padding:6px;font-size:80%;font-family:Times New Roman;xcolor:white;background-color:#efefea;'>
+<body id='bd1' style='xxtransform:scale(1.4);padding:6px;font-size:100%;font-family:Times New Roman;xcolor:white;xbackground-color:#efefea;' class='test1'>
 <div id='dvscript'></div>
 <div id='dvscore'></div>
 <div id='dvstat'></div>
 <center>
-<dialog id='dlg1' style='background-color:#685858 margin-top:0px;width:98%;'>
-  <button autofocus onclick='dlg1cls();'>Close</button>
+<dialog id='dlg1' style='xbackground-color:#685858 margin-top:0px;width:98%;' class='test1'>
+  <button autofocus style='margin-bottom:10px;'   onclick='dlg1cls();'>Close</button>
   <pre id='prdlg1'></pre>
 </dialog>
 </center>
 
 <center>
-<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.12_250114-1853</span><br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.13_250123-1839</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
 <i><span id='h6part' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
@@ -114,7 +118,7 @@ button {font-size:80%;}
 //=========================================
 //=========================================
 //=========================================
-//=========================================
+//=============================.============
 //alert(11111);
 let currsect=1;
 let maxsect=1;
@@ -125,6 +129,7 @@ let currqst=0;
 let totparts=0;
 let totsects=0;
 let bshow_en=true;
+let remtries=10;
 //alert(sprintf0d(2, currpart));
 //if(localStorage.getItem(appref+'tx1')==null){
 //  localStorage.setItem(appref+'tx1', eval('part'+sprintf0d(2,currpart)) );
@@ -165,9 +170,15 @@ dvstat=document.getElementById('dvstat');
 bd1=document.getElementById('bd1');
 dvscript=document.getElementById('dvscript');
 dvscore=document.getElementById('dvscore');
+dlg1=document.getElementById('dlg1');
+
 //localStorage.getItem(appref+'tx1');
 let alines1 = Array(); //tx1.value.split(/\n/);
 let alines = Array();
+
+//dlg1.className='test2';
+//bd1.className='test2';
+settheme();
 //=============================
 function loadjsxx(jsfile, onloadfunc){
   //prevpartid=currpartid;
@@ -318,7 +329,9 @@ try{
 //alert(aqst.length);
     let asel=Array();
     if(typeof aqst[1] != 'undefined') 
-      asel=aqst[1].split(/\[/);
+      asel=aqst[1]
+        .replace(/\'/g, '```')
+        .split(/\[/);
     const aqst1=aqst[0].split(/%%%/);
     aqst[0]=aqst1[0];
     if(aqst.length < 2){
@@ -327,47 +340,61 @@ try{
       //qststr=aqst[0];
       //alert(1);
     }else if(aqst.length == 2){
+ //alert(fllblnkvals);
+      const afllblnkvals = fllblnkvals.split(/\|/);
       functype="fillblanks";
       for(j in asel){
-        //alert(asel[j]);
+  //alert(j+'____ '+asel[j]);
+        let aqst_j_ ='';
         if(asel[j].match(/\]/)){
           const atmp1=asel[j].split(/\]/);
           if(ansstr!="") ansstr+="|";
           ansstr+=atmp1[0];
           if(ansidstr!="") ansidstr+="|";
           ansidstr+='ans'+i1+'_'+j;
-          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:50px' name='"+aqst[j]+"'></input>"+atmp1[1];
+          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:50px' value=\""+(  (typeof afllblnkvals[j-1] != 'undefined') ? afllblnkvals[j-1] : ''      )+"\"></input>"+atmp1[1];
+    //alert('1___'+qststr);
         }else {
           qststr+=asel[j];
         }
+        //alert(qststr)
        // qststr+="</input>"+asel[j];
       }//endfor
-      //alert(qststr);
-      //alert(ansstr);
-      //alert(ansidstr);
+      //alert('1__'+qststr);
+      //alert('2__'+ansstr);
+      //alert('3__'+ansidstr);
     //---------------------------------
     }else if(  (aqst.length == 4) && (aqst[1].match(/[0-9]+/) )  ){
       functype="vocabwrite";
       //alert('write article');
       qststr+="<input id='minchrs' type='hidden' value='"+aqst[1]+"' />";      
       qststr+="<input id='exclwrds' type='hidden' value='"+aqst[2]+"' />";
-      qststr+="<input id='inclwrds' type='hidden' value='"+aqst[3]+"' />";      
+      //const ainclwds=aqst[3].split(/ /);
+      let inclwds=aqst[3].replace(/(=[a-zA-Z_\-]*)/ig, '');
+      qststr+="<input id='inclwrds' type='hidden' value='"+inclwds+"' />";      
       qststr+="<div style='font-size:80%;color:red;'><b>Disallowed words:</b> "+aqst[2]+"</div>"
       +"<div style='font-size:80%;color:green;'><b>Required words:</b> "+aqst[3]+"</div>"
       +"<div style='font-size:80%;color:darkslategray;'><b>Minimum chars:</b> "+aqst[1]+"</div>"
-+"<textarea id='txtvcbwrite"+currref()+"' style='width:95%;height:100px;' >loading...</textarea>";
-      setTimeout('poptxtvcbwrite(currref());', 800);
++"<textarea id='txtvcbwrite"+currref()+"' style='width:95%;height:100px;'>"+fllblnkvals+"</textarea>";
+//alert(fllblnkvals);
+      //setTimeout('poptxtvcbwrite(currref());', 800);
     //---------------------------------     
     }else {
+
       let itype='radio';
       let countsel=0
+      let countslsh=0;
+      const afllblnkvals = fllblnkvals.split(/\|/);
+      functype="fillblanks";
       for(let j=1; j<aqst.length; j++){
-        if(aqst[j].match(/\]/)){
-          countsel++;
-        }
+        if(aqst[j].match(/\]/)) countsel++;
+        if(aqst[j].match(/%%/)) countslsh++;
       }//endfor
-      if(countsel>1) itype='checkbox';
+      if((aqst.length - countsel ==1) && (aqst.length - countslsh ==1))  itype='text';
+      else if(countsel>1) itype='checkbox';
+      //alert(itype);
       for(let j=1; j<aqst.length; j++){
+ 
         functype="multiselect";
         if(ansstr!="") ansstr+="|";
         if(aqst[j].match(/\]/)){
@@ -380,11 +407,27 @@ try{
         const atmp1=aqst[j].split(/%%%/);
         if(ansidstr!="") ansidstr+="|";
         ansidstr+='ans'+i1+'_'+j;
-        qststr+="<input type='"+itype+"' id='"+'ans'+i1+'_'+j+ "' name='"+aqst[qstidx]+"' style='width:50px'/>"+
-           atmp1[0].replace(/[\[\]]/g,'')+
-           "</label><br/>";
+        
+        if(itype=='text'){
+          functype="multitext";
+          const atmp1b=atmp1[0].split(/%%/);
+          qststr+=
+           atmp1b[0]+
+  "<br/><input type='"+itype+"' id='"+'ans'+i1+'_'+j+ "' name='"+
+            atmp1b[1].replace(/[\[\]]/g,'')
+            +"' style='width:90%;' value='"+(  (typeof afllblnkvals[j-1] != 'undefined') ? afllblnkvals[j-1] : '' )+"'/>"+
+             "</label><br/>"; 
+
+        }else {
+        const aqst_qstidx_ = 1;
+          qststr+="<input type='"+itype+"' id='"+'ans'+i1+'_'+j+ "' name='"+aqst_qstidx_+"' style='width:50px'/>"+
+             atmp1[0].replace(/[\[\]]/g,'')+
+             "</label><br/>";
+ 
+        }
       }//endfor
     }//endif
+
 //🏠	🏡  ▶	⏭	⏯	◀  ⏮	
     let btnstr='Submit';
     if(functype=='info') btnstr='▶'; lngcontinue;
@@ -397,37 +440,47 @@ try{
     const tonxtprt = ( (functype!='info') || (currsect >= maxsect) ) ? "" :
        "<button id='btn2prvprt' onclick='startsection(sectionfldr,((currpart+1>=totparts)?totparts:currpart+1),1);'>⏭</button>&emsp;&emsp;";
        
-       
     const bckstr =
-       "<button id='btnbk' onclick='goback();'>◀</button>&emsp;&emsp;";
+       "<button id='btnbk' onclick='goback(\""+functype+"\",\""+ansidstr+"\");'>◀</button>&emsp;&emsp;";
+
+
+  let submitstr= '<button id="qbtn'+i1+'"   onclick="procans(\\"' + functype 
+        + '\\",\\"'+ansstr
+        +'\\",\\"'+ansidstr
+        +'\\",\\"'
+        +( (typeof aqst1[1]!='undefined')
+          ? aqst1[1] : '' ) 
+        +'\\",\\"'
+        +( (typeof aqst1[2]!='undefined')
+        ? aqst1[2] : '' ) 
+      +'\\");">'+btnstr+"</button>&emsp;&emsp;";
+submitstr =    "<button id='qbtn"+i1+"' onclick='procans(\"" + functype 
+        + "\",\""+ansstr
+        +"\",\""+ansidstr
+        +"\",\""
+        +( (typeof aqst1[1]!='undefined')
+          ? aqst1[1] : '' ) 
+        +"\",\""
+        +( (typeof aqst1[2]!='undefined')
+        ? aqst1[2] : '' ) 
+      +"\");'>"+btnstr+"</button>&emsp;&emsp;";
+//alert(submitstr);
 
     strout+= //!!
       "<div id='qst"+i1+"' style='display:none;'>"+
       //i1 +"/"+alines.length + " "+
      
       //----------------------!!
-      aqst[0]
-         .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
-         .replace(/##(\s+)/g, currpart+'.'+currqst+''+"$1")
-         .replace(/''([\w\-\s\.\-_]+)''/g, "<i>$1</i>")
-         .replace(/\{\{/g, '<b>')
-         .replace(/\}\}/g, '</b>')
-         .replace(/\[\[/g, '<i>')
-         .replace(/\]\]/g, '</i>')
-         .replace(/>>>/g, '<br/><br/>')
-         .replace(/>>/g, '<br/>')
-         .replace(/\{([a-z0-9\-_]+)\.mp4\}/g, "<video controls width='96%' controlslist='nofullscreen nodownload noremoteplayback noplaybackrate foobar' ><source src='./"+coursefldr+"/"+sectionfldr+"/$1.mp4' type='video/mp4' ></video>")
-     .replace(/\{([a-z0-9\-_]+)\.(png|gif|jpg)\}/g, "<center><img style='max-width:96%;max-height:150px;xtext-alignment:center;' src='./"+coursefldr+"/"+sectionfldr+"/$1.$2'  ></img></center>")
-     .replace(/\{([a-z0-9\-_]+)\.(mp3|m4a)\}/g, 
-"<audio controls controlslist='nofullscreen nodownload noremoteplayback noplaybackrate foobar' ><source src='./"+coursefldr+"/"+sectionfldr+"/$1.$2' type='audio/mpeg' ></audio>")
-         + "<br/>"+
-      qststr+ "<br/>"+
+      fmtstr(aqst[0])
+         + "<br/>" +
+      fmtstr(qststr)+ "<br/>"+
       //----------------------!!
       '<center>'+
       bk2lndpg +
       toprvprt +
       bckstr +
-      "<button id='qbtn"+i1+"' onclick='procans(\"" + functype 
+      submitstr +
+     /*  "<button id='qbtn"+i1+"' onclick='procans(\"" + functype 
         + "\",\""+ansstr
         +"\",\""+ansidstr
         +"\",\""
@@ -437,12 +490,23 @@ try{
         +( (typeof aqst1[2]!='undefined')
         ? aqst1[2] : '' ) 
       +"\");'>"+btnstr+"</button>&emsp;&emsp;"+
-          tonxtprt +
-         '</center>'+
+   */  
+       tonxtprt +
+          
+        ( ( functype != 'info'   )   ? "<span>"+remtries+" tries</span>"  :  '')+  
+          
+          "<br/><br/><button id='btnbk' onclick='chngfntsz(\"decrease\");'>Aa--</button>&emsp;&emsp;"+
+         
+         "<button id='btnbk' onclick='chngfntsz(\"100%\");'>Aa100%</button>&emsp;&emsp;"+
+         
+          "<button id='btnbk' onclick='chngfntsz(\"increase\");'>Aa++</button>&emsp;&emsp;"+
+              "<span id='spfntsz'></span>&emsp;&emsp;"+
+          "<br/><br/>"+
+          "<button id='btnnvl' onclick='showsttngs();'>⚙️ Settings</button>&emsp;&emsp;"+      
+    "<button id='btnnvl' onclick='showwrtngs();'>Your writings</button>&emsp;&emsp;"+
+   '</center>'+
       "</div>"+
-      
        "" ; 
-
   }//endfor
   //alert(appref);
   if(b_en_btn){
@@ -450,11 +514,13 @@ try{
   +strout;
   }
   //alert(dv1);
+  strout+="<br/><br/><br/><br/><br/><br/><br/>";
   dv1.innerHTML=strout;
   pgmode='lesson';
+  h6part.focus();
    dbg('qst'+currqst);
   document.getElementById('qst'+currqst).style.display='block';
-  
+   setTimer("chngfntsz();", 800);
 }catch(e){
   dbg('>>e3:'+e.message);
 }
@@ -463,32 +529,40 @@ try{
 //--------------------------------------
 function procans(ptype, pans, 
 pansid, pcrrctmsg='', pincrrmsg=''){
+//alert(9754);
   let redirstr='';
   let bnextq = true;
-  
 try{
 //dbgx(ptype);
 if(ptype=='info'){
   //alert(256);
    incrlevel(); //currqst++;
 }else {
-  //alert(pans);
+ // alert(pans);
   //alert(pansid);
   //---------------------------
+  // VOCABWRITE
   if(ptype=='vocabwrite'){
     const exclwrds = document.querySelector('#exclwrds');
     const inclwrds = document.querySelector('#inclwrds');
     const minchrs = document.querySelector('#minchrs');
     const txtvcbwrite = document.querySelector('#txtvcbwrite'+currref());
+    txtvcbwrite.value = cnvinpt2acnts(txtvcbwrite.value);
+    fllblnkvals=txtvcbwrite.value.trim();
 //dbgx(txtvcbwrite.value);
+/*
     localStorage.setItem(appref+'txtvcbwrite'+currref(), txtvcbwrite.value);
+*/
     let aexcl=Array();
     let aincl=Array();
     let bok=true;
+    //alert(3);
+   if(fllblnkvals!='``pass'){
     if (exclwrds) {
 	  aexcl =exclwrds.value.split(/\s/);
 	  for(let i in aexcl){
 		let rgx1='';
+		aexcl[i]=aexcl[i].replace(/\^/g, "\\^");
 		if(aexcl[i].substr(0,1)=='['){
 	      rgx1=new RegExp(aexcl[i], 'ig');
 	    }else{
@@ -505,6 +579,7 @@ if(ptype=='info'){
     if( (inclwrds) && (bok)){
       aincl =inclwrds.value.split(/\s/);
 	  for(let i in aincl){
+    	aincl[i]=aincl[i].replace(/\^/g, "\\^");
         let rgx1=new RegExp('\\b'+aincl[i]+'\\b', 'ig');
 		//alert(aexcl[i]);
 		if(!String(txtvcbwrite.value).match(rgx1)){
@@ -520,36 +595,71 @@ if(ptype=='info'){
 	    bok=false;
       }
     }
+    //alert(4);
     if(!bok){
       bnextq=false;
     }
+   }//endif
     
   //---------------------------
   }else{
     const aansid=pansid.split(/\|/);
-    const aans=pans.split(/\|/);
+    const aans=pans.replace(/```/g,"'").split(/\|/);
     //let bnextq = true;
     gmtotqstn++;
-    
+ //alert(pans);
+    fllblnkvals='';
     for(i in aansid){
       const obj = document.getElementById(aansid[i]);
       if(ptype=="fillblanks"){
-        if(obj.value  != aans[i]){
+        
+      // FILLBLANKS
+        if(fllblnkvals!='') fllblnkvals+='|';
+        fllblnkvals+=obj.value.trim();
+        if(obj.value.trim()=='``pass') break;
+     obj.value=cnvinpt2acnts(obj.value);
+  //alert(obj.value);
+        if(obj.value.trim().toLowerCase()  != aans[i].trim().toLowerCase() ){
+          if(obj.value.trim())
+            alert("'"+obj.value+"' is incorrect!");
           bnextq = false;
         }
       }else if(ptype=="multiselect"){
+      // MULTISELECT
         if(String(obj.checked) != String(aans[i])){
            bnextq = false; 
         }
+      }else if(ptype=="multitext"){      
+        if(fllblnkvals!='') fllblnkvals+='|';
+        fllblnkvals+=obj.value.trim(); 
+        if(obj.value.trim()=='``pass') break;
+        //alert('here___'+ptype);
+        /*   alert(ptype+'__'+pans+
+              '_'+pansid+'_'+pcrrctmsg+
+              '_'+ pincrrmsg);  */
+obj.value = cnvinpt2acnts(obj.value);
+
+        if(obj.name.toLowerCase().trim()!=obj.value.toLowerCase().trim()){
+            if(obj.value.trim())
+            alert("'"+obj.value+"' is incorrect!");
+             bnextq = false; 
+         }
       }
     }//endfor
   }//endif
+//alert(fllblnkvals);
   //---------------------------
-
   let strmsg='';
-
-  if(bnextq){
-    strmsg+="Well done! Your answer was correct!  <br/><span style='font-size:150%'> 😄 👍 </span>\n";
+//alert(5);
+  if(remtries<=0){
+    remtries=0;
+  }
+  if((bnextq)||(!remtries)){
+    if(bnextq)
+         strmsg+= outemoji('quizcorrect') + "";
+    else strmsg+= outemoji('quizexptries') + "";
+    fllblnkvals='';
+    //alert(6);
     if(pcrrctmsg.trim()){
       const atmp2=pcrrctmsg.split(/#/);
       strmsg+=atmp2[0]+'\n';
@@ -566,11 +676,30 @@ if(ptype=='info'){
           }
         }
       }//endfor
+    }//endif
+    //alert(7);
+    if(ptype=='vocabwrite'){
+    //alert(1);
+    try{
+      const txtvcbwrite = document.querySelector('#txtvcbwrite'+currref());
+      let wrtngs=localStorage.getItem(appref+"showwrtngs");
+      if(!wrtngs) wrtngs='';
+      localStorage.setItem(appref+"showwrtngs",
+           "<div style='text-align:left;'><hr/>"+Date().toString()+'\n'+
+           txtvcbwrite.value.replace(/\n/g,"\n") +'</div>'+ wrtngs.substr(0, 1000 +(0*1000 *100 *8)).replace(/<\/div>(^<\/div>)+$/,'</div>') );
+      }catch(e){
+      alert(e.message);
+      }
     }
+    //alert(2);
     gmtotrght++; dbg('CORRECTANS');
-    incrlevel(); //currqst++; //!!
+    const msg1 = incrlevel(); //currqst++; //!!
+    remtries=10;
+    msgout(strmsg + '<br/>'+msg1);
   }else {
-    strmsg+='Your answer was incorrect\n';
+    remtries--;
+    strmsg+= outemoji('quizincorrect') + "";
+
     if(pincrrmsg.trim()){
       const atmp2=pincrrmsg.split(/#/);
       strmsg+=atmp2[0];
@@ -592,8 +721,8 @@ if(ptype=='info'){
       }//endfor
     }//endif 
     gmtotwrng++; dbg('INCORRECTANS');
+    msgout(strmsg);
   }//endif bnextq
-  msgout(strmsg);
 }//endif
 }catch(e){
   dbg('>>e4:'+e.message);
@@ -607,7 +736,24 @@ if(ptype=='info'){
   setTimeout('gencourse()', 0);
 }//endfunc
 //--------------------------------------
-function goback(){ //!!
+function goback(ptype='', pdata=''){ //!!
+//alert(ptype+"___"+pdata);
+if((ptype=='fillblanks')||(ptype=='multitext')){
+  let fbans='';
+  const atmp1=pdata.split(/\|/);
+  for(let i in atmp1){
+    if(fbans!='') fbans+='|';
+    const obj1=document.getElementById(atmp1[i]);
+    fbans+=obj1.value;
+  }//endfor
+  //localStorage.setItem(appref+'fbans', fbans);
+  //alert(fbans);
+  fllblnkvals = fbans;
+}else if(ptype == 'vocabwrite'){
+  const txtvcbwrite = document.querySelector('#txtvcbwrite'+currref());
+  fllblnkvals=txtvcbwrite.value;
+  //alert(fllblnkvals);
+}//endif
 let outcome='gencourse';
   currqst--;
   if(!currqst){
@@ -623,21 +769,22 @@ let outcome='gencourse';
 }//endfunc
 //---------------------
 function incrlevel(ptype='qst'){ //!!
+let retstr='';
 let outcome='';
   if(ptype=='qst'){
     currqst++;
     if(currqst>(alines.length)){
-      //alert('end of part') ;
+retstr += outemoji('endofpart') ;
       currpart++;
       currqst=1;
       if(currpart > asectparts[sectionfldr]){ //otparts){
-  //alert('end of section');
         if((currsect==maxsect) 
           &&(maxsect<=totsects)){
+retstr += outemoji('endofsection');
           currsect++;
           maxsect++;
           if(maxsect > totsects){
-            msgout('Congratulations on completing this course!');
+retstr += outemoji('endofcourse'); 
           }
         }
      //alert('end of section 2');
@@ -656,6 +803,7 @@ dbgx('GENCOURSE');
   
 savecurrpos();
 if(outcome) eval(outcome+'();');
+return retstr;
 }//endfunc
 //---------------------
 function sprintf0d(pwidth=2, pval=0){ //!!
@@ -707,7 +855,7 @@ h3part.innerHTML='Section ' + asections[sectionfldr];
 
 h1part.innerHTML='Part '+currpart 
 +(currpartname!=''? ': '+currpartname : '')+prg1()
-+ '<br/><b><u>Lesson '+currqst+' (of '+alines.length +')</u></b>'
++ '<br/><b><u>Section '+currsect+' - Part '+currpart+': Module '+currqst+' (of '+alines.length +')</u></b>'
 ;
 
 try{
@@ -729,10 +877,9 @@ break;
 //if(!totparts) totparts=1;
 //dbg(currpart, totparts);
 if(currpart > totparts){
-  //h1part.innerHTML = 'Congratulations! You have completed the section!';
   return 0;
 }
-//dbg('totparts='+totparts);
+//dbg('totparts='+totparts);  
 //====================================
 //====================================
 //====================================
@@ -890,6 +1037,19 @@ function msgout(pmsg){
 function dlg1cls(){ 
   dlg1 = document.getElementById('dlg1');
   dlg1.close();
+  //alert(theme);
+  settheme(theme);
+}//endfunc
+//-----------------
+function settheme(ptheme=''){
+  if(ptheme){
+  localStorage.setItem(appref+'theme', ptheme);
+  }else {
+    const ltheme=  localStorage.getItem(appref+'theme');
+    if(ltheme) theme=ltheme;
+  }
+  bd1.className=theme;
+  dlg1.className=theme;  
 }//endfunc
 //------------------
 function showtrans(){
@@ -956,6 +1116,7 @@ if(typeof atmp1[4]!='undefined'){
 }
 }//endfunc
 //------------------
+/*
 function poptxtvcbwrite(pcurrref=''){
   //dbgx(pcurrref);
   const txtvcbwrite = document.querySelector('#txtvcbwrite'+pcurrref);
@@ -964,6 +1125,7 @@ function poptxtvcbwrite(pcurrref=''){
     txtvcbwrite.value = (valstr ? valstr : '');
   }
 }//endfunc
+*/
 //------------------
 function shwlndpghdr(){
 //alert(pgmode);
@@ -1009,21 +1171,239 @@ for(let i=0; i<(totparts - currpart); i++){
 
     prg1+='🟧';
 }
-prg1+='<br/>';
-//----------------------------
+prg1+='<div style="font-size:80%;">';
+//-------------------------------------
 for(let i=0; i<currqst; i++){
   prg1+='🟩';//🟢';
 }
 for(let i=0; i<alines.length - currqst; i++){
   prg1+='⬜'; //⬛'; //🟥';//🔴';
 }
-prg1+='</div>';
+prg1+='</div></div>';
 return prg1;
 }//endfunc
+//-------------------------------------
+function chngfntsz(popt='init'){
+let fntsz=localStorage.getItem(appref+'bd1fntsz');
+let currfntsz= bd1.style.fontSize;
+if(!fntsz) fntsz=currfntsz;
+
+if(popt=='init'){
+  //alert(fntsz);
+  
+}else if(popt=='100%'){
+  fntsz='100%';
+
+}else if(popt=='decrease'){
+  let currval=Number(fntsz.replace(/%/g,''));
+  currval=currval-2;
+  if(currval < 70) currval = 70;
+  fntsz=currval+'%';
+
+}else{
+  let currval=Number(fntsz.replace(/%/g,''));
+  currval=currval+2;
+  if(currval > 130) currval = 130;
+  fntsz=currval+'%';
+}
+let spfntsz=document.getElementById('spfntsz');
+if(spfntsz){
+if(typeof spfntsz !='undefined'){
+  spfntsz.innerHTML=fntsz;
+}}
+
+bd1.style.fontSize=fntsz;
+localStorage.setItem(appref+'bd1fntsz',fntsz);
+}//endfunc
 //------------------
+function outemoji(popt){
+const fntsz='400%';
+if(popt=='endofcourse'){    
+  const  courseimg1='🥳';
+  const  courseimg2='🏆';
+  const acourseimg3=['🎊','🎆'];
+  const  courseimg3 = 
+     acourseimg3[getrandnum(acourseimg3.length)];
+  return "<b>Congratulations!! You have completed this course!</b><br/><span style='font-size:"+fntsz+"'>"+
+     courseimg1+courseimg2+courseimg3+"</span><br/>";  
+  
+
+}else if(popt=='endofsection'){    
+  const  sectimg1='🥳';
+  const  sectimg2='🏅';
+  const asectimg3=['🎉','🎇'];
+  const  sectimg3 = 
+     asectimg3[getrandnum(asectimg3.length)];
+  return "Congratulations! You have completed <br/><b>Section "+(currsect)+"!</b><br/><span style='font-size:"+fntsz+"'>"+
+     sectimg1+sectimg2+sectimg3+"</span><br/>";  
+  
+  
+}else if(popt=='endofpart'){    
+  const apartimg1=['🤩','😎','😃'];
+  const apartimg2=['✨','🌟','★'];
+  const  partimg1 = 
+     apartimg1[getrandnum(apartimg1.length)];
+  const  partimg2 = 
+     apartimg2[getrandnum(apartimg2.length)];
+  return "Congratulations! You have completed <br/><b>Part "+(currpart)+" of Section "+(currsect)+"!</b><br/><span style='font-size:"+fntsz+"'>"+
+     partimg1+partimg2+"</span><br/>";  
+
+}else if(popt=='quizcorrect'){    
+  const aquizimg1=['😀','😄','😊','😁','😃'];
+  const aquizimg2=['💫','👍','👌'];
+  const  quizimg1 = 
+     aquizimg1[getrandnum(aquizimg1.length)];
+  const  quizimg2 = 
+     aquizimg2[getrandnum(aquizimg2.length)];
+  return "Well done! Your answer was <b>correct!</b>  <br/><span style='font-size:"+fntsz+"'>"+
+     quizimg1+quizimg2+"</span><br/>";
+     
+     
+}else if(popt=='quizexptries'){    
+  const aquizimg1=['😀','😄','😊','😉'];
+  const aquizimg2=['💫','👍','👌'];
+  const  quizimg1 = 
+     aquizimg1[getrandnum(aquizimg1.length)];
+  const  quizimg2 = 
+     aquizimg2[getrandnum(aquizimg2.length)];
+  return "Good effort! Your retries have <b>used up.</b> We will now move on.<br/><span style='font-size:"+fntsz+"'>"+
+     quizimg1+quizimg2+"</span><br/>";
+     
+     
+}else if(popt=='quizincorrect'){    
+/*🏋️‍♂️🍦🍨🍪🍫🍰🧁⊛🍩☕🥛🍹🥤⛵🛶🎁🎀🏀🎾🏓
+
+🦸🦸‍♀️
+
+
+
+['💪','🏃','🏃‍♂️','🏃‍♀️','💃','🕺','🧗','🧗‍♂️','🧗‍♀️','🏇','🏂','🏄','🏄‍♂️','🏄‍♀️','🚣','🚣‍♂️','🚣‍♀️','⛹','⛹️‍♂️','⛹️‍♀️','🏋','🏋️‍♂️','🏋️‍♀️','🚴','🚴‍♂️','🚴‍♀️','🚵','🚵‍♂️','🚵‍♀️','🤾','🤾‍♂️','🤾‍♀️']	
+
+*/
+  const  icrrimg1='🙂';
+  const aicrrimg2=['💪','🏃','🏃‍♂️','🏃‍♀️','🧗','🧗‍♂️','🧗‍♀️','🏇','🏂','🏄','🏄‍♂️','🏄‍♀️','🚣','🚣‍♂️','🚣‍♀️','⛹','⛹️‍♂️','⛹️‍♀️','🏋','🏋️‍♂️','🏋️‍♀️','🚴','🚴‍♂️','🚴‍♀️','🚵','🚵‍♂️','🚵‍♀️','🤾','🤾‍♂️','🤾‍♀️'];
+
+//['💪','🚀','🏋️‍♂️','🍦','🍨','🍪','🍫','🍰','🧁','⊛','🍩','☕','🥛','🍹','🥤','⛵','🛶','🎁','🎀','🏀','🎾','🏓'];
+  const  icrrimg2 = 
+     aicrrimg2[getrandnum(aicrrimg2.length)];
+  return "Good effort! Your answer was incorrect. Try again.<br/><span style='font-size:"+fntsz+"'>"+
+     icrrimg1+icrrimg2+"</span><br/>"
+/* +"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1"
++"<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1<br/>1" */
+;
+}//endif
+}//endfunc
+//------------------
+function getrandnum(pmax) {
+  return Math.floor(Math.random() * pmax);
+}//endfunc
+
 // + "Describe your holiday|200|i [jkqxz] thou he she it we they you|fi ti ef hi ni chi nhw\n"
 //------------------
+function showwrtngs(){
+let wrtngs=localStorage.getItem(appref+"showwrtngs");
+if (!wrtngs) wrtngs='Your writings will display here after your first writing exercise...';
+msgout(wrtngs +  "<hr/><b>Entries are deleted if they get beyond a certain volume. Please select, copy, paste, and save this entire page into an external file.</b>");
+}//endfunc
 //alert(8888);
+//--------------------
+function cnvinpt2acnts(pstr){
+//return pstr;
+return String(pstr)
+.replace(/a\/u\b/g, 'áu')
+.replace(/a\^/g, 'â')
+.replace(/e\^/g, 'ê')
+.replace(/i\^/g, 'î')
+.replace(/o\^/g, 'ô')
+.replace(/u\^/g, 'û')
+.replace(/w\^/g, 'ŵ')
+.replace(/y\^/g, 'ŷ')
+.replace(/(\w)a%(\w)/g, '$1ä$2')
+.replace(/(\w)e%(\w)/g, '$1ë$2')
+.replace(/(\w)i%(\w)/g, '$1ï$2')
+.replace(/(\w)o%(\w)/g, '$1ö$2')
+.replace(/(\w)u%(\w)/g, '$1ü$2')
+.replace(/(\w)w%(\w)/g, '$1ẅ$2')
+.replace(/(\w)y%(\w)/g, '$1ÿ$2')
+.replace(/(\w)a`(\w)/g, '$1à$2')
+//.replace(/(\w)eh(\w)/g, '$1ë$2')
+//.replace(/(\w)ih(\w)/g, '$1ï$2')
+//.replace(/(\w)oh(\w)/g, '$1ö$2')
+//.replace(/(\w)uh(\w)/g, '$1ü$2')
+//.replace(/(\w)wh(\w)/g, '$1ẅ$2')
+.replace(/(\w)y`(\w)/g, '$1ỳ$2')
+//.replace(/```/g, "'")
+;
+//alert(obj.value);
+}//endfunc
+//------------------
+function fmtstr(pstr){
+//return pstr;
+//console.log('1__'+pstr);
+  const outstr=String(pstr)
+         .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
+         .replace(/##(\s+)/g, currpart+'.'+currqst+''+"$1")
+         .replace(/''([\w\-\s\.\-_]+)''/g, "<i>$1</i>")
+         .replace(/\{\{/g, '<b>')
+         .replace(/\}\}/g, '</b>')
+         .replace(/\(\(/g, '<u>')
+         .replace(/\)\)/g, '</u>')
+         .replace(/\[\[/g, '<i>')
+         .replace(/\]\]/g, '</i>')
+         .replace(/>>>/g, '<br/><br/>')
+         .replace(/>>/g, '<br/>')
+         .replace(/\{([a-z0-9\-_]+)\.mp4\}/g, "<video controls width='96%' controlslist='nofullscreen nodownload noremoteplayback noplaybackrate foobar' ><source src='./"+coursefldr+"/"+sectionfldr+"/$1.mp4' type='video/mp4' ></video>")
+     .replace(/\{([a-z0-9\-_]+)\.(png|gif|jpg)\}/g, "<center><img style='max-width:96%;max-height:150px;xtext-alignment:center;' src='./"+coursefldr+"/"+sectionfldr+"/$1.$2'  ></img></center>")
+     .replace(/\{([a-z0-9\-_]+)\.(mp3|m4a)\}/g, 
+"<audio controls controlslist='nofullscreen nodownload noremoteplayback noplaybackrate foobar' ><source src='./"+coursefldr+"/"+sectionfldr+"/$1.$2' type='audio/mpeg' ></audio>")
+  ;
+  //console.log('2__'+outstr);
+  
+  return outstr;
+}//endfunc
+//--------------------------------------
+function showsttngs(){
+
+const atmp1=String("test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12").split(/ /);
+let msgstr='';
+let chckd='';
+for(let i in atmp1){
+  if(atmp1[i]==theme) chckd='checked';
+  else                chckd='';
+  
+  msgstr+= "<nobr><input name='1' "+chckd+"   onclick='theme=\""+atmp1[i]+"\";' type='radio'   style='height:20px;margin-bottom:20px;'      ><span style='xheight:20px;xmargin:20px;padding:8px;border:1px solid black;' class='"+atmp1[i]+"'> "+atmp1[i]+" </span></input>&emsp;</nobr>";  
+
+}//endfor
+
+
+ msgout(msgstr );
+}//endfunc
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
+//--------------------------------------
 //--------------------------------------
 //--------------------------------------
 //--------------------------------------

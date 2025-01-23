@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.13_250123-1839 - Additional enhancements related to improvements in the user interface, bugfixes, and significant new functionality such as a themes interface, font-size adjustments, new types of quizzes, etc.
+-  Amendments as per the release description
+
 ## 0.0.12_250114-1853 - Additional enhancements to user interface including additional navigation buttons
 -  Amendments as per the release description
 
