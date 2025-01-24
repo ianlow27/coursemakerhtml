@@ -1,7 +1,7 @@
 <!DOCTYPE html><html><head><script>
-let theme='test1';
+let theme='classic';
 let pgmode='landing';
-let bdbgmode=false; //true; //false;
+let bdbgmode=false; //true; //false; //true; //false;
 let coursefile='./coursedata.js';
 let coursename='';
 let coursedesc='';
@@ -20,7 +20,6 @@ let gmtotqstn=0;
 /* https://www.prosettings.com/emoji-list/#google_vignette
 💎  🎉  🎯 🏆 💫 💝 💖 🍒 🌟 🚀 ⭐ ✨	
 🏠	🏡  ▶	⏭	⏯	◀  ⏮	
-
 */
 let gmtotrght=0;
 let gmtotwrng=0;
@@ -66,7 +65,7 @@ for(i in atmpsects){
 }catch(e){
   dbgx(e.message);
 }
-}
+}//endfunc
 //=======================================
 let currpartid=0;
 let prevpartid=0;
@@ -79,18 +78,46 @@ let part30='';let part31='';let part32='';let part33='';let part34='';let part35
 //----------------------------------
 </script>
 <style>
-pre  {font-family: Times New Roman;white-space:pre-wrap;xfont-size:70%;word-wrap:break-word;margin:0px;padding:0px;width:98%;} /*!!*/
+pre  {xfont-family: Times New Roman;white-space:pre-wrap;xfont-size:70%;word-wrap:break-word;margin:0px;padding:0px;width:98%;} /*!!*/
 textarea {font-size:100%;font-family: Arial;Times New Roman;}
 button {font-size:80%;}
 ::xbackdrop { background-image: linear-gradient( 45deg, grey, aliceblue, lightblue, azure); opacity: 0.40;}
 ::backdrop { background-image: linear-gradient( 0deg, darkgrey, darkgrey, darkgrey, darkgrey); opacity: 0.75;}
 .test1 {background-color:black;color:white;}
 .test2 {background-color:yellow;color:blue;}
+
+
+
+.light{background-color:white;color:black;font-family: Times New Roman;}
+.dark{background-color:black;color:white;font-family: Times New Roman;}
+
+.safari{background-color:darkgreen;color:moccasin;font-family: courier;}
+.sahara{background-color:moccasin;color:saddlebrown;font-family: courier;} 
+.spacepod{background-color:aliceblue;color:darkslategrey;font-family: courier; xx: monospace;}
+.funkypop{background-color:lemonchiffon;color:magenta;font-family:Arial; xx: sans-serif;}  
+.arty{background-color:linen;color:mediumblue;font-family: cursive;}
+.cafe{background-color:papayawhip;color:saddlebrown;font-family: cursive;}
+.classic{background-color:white;color:black;font-family:times new roman; xx: serif;}
+.classique{background-color:black;color:white;font-family:times new roman; xx: serif;}
+.nature{background-color:palegreen;color:saddlebrown;font-family: cursive;}
+.pastel{background-color:mistyrose;color:olivedrab;font-family: courier;}
+.altarastar{background-color:darkslateblue;color:aliceblue;font-family: courier; xx:monospace;}
+.unwindzone{background-color:midnightblue;color:thistle;font-family:Arial; xx: sans-serif; }
+.chillzone{background-color:black;color:powderblue;font-family: courier; xx:monospace;}
+.retrozone{background-color:saddlebrown;color:aliceblue;font-family: cursive;} 
+ 
+
+
+
+
+
+
+
 </style> 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
-<body id='bd1' style='xxtransform:scale(1.4);padding:6px;font-size:100%;font-family:Times New Roman;xcolor:white;xbackground-color:#efefea;' class='test1'>
+<body id='bd1' style='xxtransform:scale(1.4);padding:6px;font-size:100%;xfont-family:Times New Roman;xcolor:white;xbackground-color:#efefea;' class='test1'>
 <div id='dvscript'></div>
 <div id='dvscore'></div>
 <div id='dvstat'></div>
@@ -102,7 +129,7 @@ button {font-size:80%;}
 </center>
 
 <center>
-<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.13_250123-1839</span><br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.14_250124-2154</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
 <i><span id='h6part' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
@@ -144,7 +171,6 @@ try{
     //alert(gotoref);
     const atmp1=gotoref.split(/\-/);
     if(typeof atmp1[2] != 'undefined'){
-      //sections1();
       currsect=Number(atmp1[0]);     
       currpart=Number(atmp1[1]);
       currqst=Number(atmp1[2]);
@@ -171,7 +197,7 @@ bd1=document.getElementById('bd1');
 dvscript=document.getElementById('dvscript');
 dvscore=document.getElementById('dvscore');
 dlg1=document.getElementById('dlg1');
-
+prdlg1=document.getElementById('prdlg1');
 //localStorage.getItem(appref+'tx1');
 let alines1 = Array(); //tx1.value.split(/\n/);
 let alines = Array();
@@ -204,8 +230,8 @@ function loadjsfile(jsfile){
  //alert(jsfile);
     scriptobj.src = jsfile;
     scriptobj.id='src_'+(jsfile.replace(/\./g,'').replace(/\//g,'_'));
-    scriptobj.onload = loadedjs;
-    scriptobj.onreadystatechange = loadedjs;
+    scriptobj.onload = loadedjs2;
+    scriptobj.onreadystatechange = loadedjs2;
     dvscript.appendChild(scriptobj);
 }//;//endfunc
 //---------------
@@ -235,8 +261,8 @@ const throwawayNode = parent.removeChild(child);
 }//endfunc
 //-----------------------------------
 let loadedjs=function(){
+
 try{
-  //sections1();
 dbg(totparts,currpart);
   totparts=currpart; 
   if(eval('part'+sprintf0d(2,currpart+1))!=''){
@@ -258,31 +284,26 @@ dbg(totparts,currpart);
 }catch(e){
   dbg('>>e2:'+e.message);
 }
+
+
 };//endfunc
 //=============================
 loadjsfile(coursefile); 
 if(!bdbgmode){
-/*dv1.style.display='none';
-h1part=document.getElementById('h1part'); //!!
-h6part=document.getElementById('h6part'); //!!
-h3part=document.getElementById('h3part'); //!!
-btn1
-*/
 dvstat.style.display='none';
-//bd1.style.display='none';
-//dvscript
 dvscore.style.display='none';
 }
 setTimeout('loadsection()',500);
 //--------------------------------------
 function loadfiles(){
 try{
-  //initdata();
   sections1(); 
-  for(let i=1; i<=asectparts[sectionfldr]; i++){
+  totparts=asectparts[sectionfldr];
+ // dbgx(totparts);
+  for(let i=1; i<=totparts; i++){
     loadjs(sectionfldr+'', i);
   }
-  setTimeout('loadedjs2()',0);
+  setTimeout('checkjs()',800);
 }catch(e){
   dbg(e.message);
 }
@@ -318,8 +339,6 @@ try{
       functype='endcourse';
       strout='<h2>End of Part</h2>';
       strout+=  "<br/><button id='btnbk' onclick='goback();'>Back</button>&emsp;&emsp;";
-      if(currpart < totparts){
-      }
       break;
     }
     if(i1 > currqst) break;
@@ -349,13 +368,13 @@ try{
         if(asel[j].match(/\]/)){
           const atmp1=asel[j].split(/\]/);
           if(ansstr!="") ansstr+="|";
-          ansstr+=atmp1[0];
+          ansstr+=atmp1[0];//.replace(/```/g, "'");
           if(ansidstr!="") ansidstr+="|";
           ansidstr+='ans'+i1+'_'+j;
-          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:50px' value=\""+(  (typeof afllblnkvals[j-1] != 'undefined') ? afllblnkvals[j-1] : ''      )+"\"></input>"+atmp1[1];
+          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:50px' value=\""+(  (typeof afllblnkvals[j-1] != 'undefined') ? afllblnkvals[j-1] : ''      )+"\"></input>"+atmp1[1].replace(/```/g, "'");
     //alert('1___'+qststr);
         }else {
-          qststr+=asel[j];
+          qststr+=asel[j].replace(/```/g, "'");
         }
         //alert(qststr)
        // qststr+="</input>"+asel[j];
@@ -613,7 +632,7 @@ if(ptype=='info'){
       const obj = document.getElementById(aansid[i]);
       if(ptype=="fillblanks"){
         
-      // FILLBLANKS
+        // FILLBLANKS
         if(fllblnkvals!='') fllblnkvals+='|';
         fllblnkvals+=obj.value.trim();
         if(obj.value.trim()=='``pass') break;
@@ -858,28 +877,35 @@ h1part.innerHTML='Part '+currpart
 + '<br/><b><u>Section '+currsect+' - Part '+currpart+': Module '+currqst+' (of '+alines.length +')</u></b>'
 ;
 
-try{
 
-totparts=0;
+
+try{
+//dbgx('882___'+totparts);
+
+/*
+let ltotparts=0;
 for(i=1; i<=10; i++){
   if(typeof eval('part'+sprintf0d(2,i)) =='undefined'){ 
-  //dbg('----1',i);
+//dbgx('----1',i);
   break;
   }else if(String(eval('part'+sprintf0d(2,i))).trim()==''){ 
     //dbg('part'+sprintf0d(2,i));
-	  //dbg('----2',i);
+//dbgx('----2',i);
 break;
   }else {
     //alert('['+eval('part'+sprintf0d(2,i)).trim()+']')
-    totparts=i;
+    ltotparts=i;
   }
 }//endfor
+//dbgx('897___'+totparts+'__'+ltotparts);
+*/
+//totparts=ltotparts;
 //if(!totparts) totparts=1;
 //dbg(currpart, totparts);
 if(currpart > totparts){
   return 0;
 }
-//dbg('totparts='+totparts);  
+//dbgx('totparts='+totparts);  
 //====================================
 //====================================
 //====================================
@@ -897,6 +923,15 @@ if(!currqst){
 }
 return 1;
 }//endfunc
+//--------------------------------------
+function checkjs(){
+for(let i=1; i<=totparts; i++){
+  if(String(eval('part'+sprintf0d(2,i))).trim()==''){ 
+    alert("ERROR: missing or malformed '"+sectionfldr+"/part"+sprintf0d(2,i)+".js'");
+  }//endif
+}//endfor
+}//endfunc
+//--------------
 //--------------------------------------
 function showlandingpg(){
 try{
@@ -953,18 +988,12 @@ try{
   currqst=pcurrqst;
   currpart=pcurrpart;
   startqst=pcurrqst;
-//sections1();
   sectionfldr=psection;
+  totparts=asectparts[sectionfldr];
+//alert(totparts);
   currsect=Number(sectionfldr.substr(0,1));
-  //currsectname=pname;
 dbg(468);
-   //initdata();
-   //loadjs(sectionfldr+'_en', currpart);
-  // if(!part01)   
-//   loadjs(sectionfldr, currpart);
   loadfiles();
-     
-   //alert(33);
 }catch(e){
   dbg('>>e7:'+e.message);
 }
@@ -992,14 +1021,14 @@ if(!linenum){
    +'totparts='  +totparts +'; \n'
    +'sectionfldr='  +sectionfldr +'; '
    +'asctpts[stnf]='+asectparts[sectionfldr]+'; '
-   +'maxsect='  +maxsect +'; '
+   +'maxsect='      +maxsect +'; '
    +'currsect='  +currsect +'; '
    +'currpart='  +currpart +'; '
    +'currqst='   +currqst  +'; \n'
    +'gmtotqstn=' +gmtotqstn+'; '
    +'gmtotrght=' +gmtotrght+'; '
    +'gmtotwrng=' +gmtotwrng+'; '
-   +pstr+'___'+pstr1 ; 
+   + "\n\n" + pstr + '___' + pstr1 ; 
   if(px){
     alert(msg);
   }else{
@@ -1050,6 +1079,7 @@ function settheme(ptheme=''){
   }
   bd1.className=theme;
   dlg1.className=theme;  
+  prdlg1.className=theme;  
 }//endfunc
 //------------------
 function showtrans(){
@@ -1145,7 +1175,7 @@ return retval;
 //------------------
 function prg1(popt=''){
 let prg1="<div style='white-space:pre-wrap;xfont-size:70%;word-wrap:break-word;'>";
-//alert(currsect+'______'+totsects+'\n'+currpart+'______'+totparts );
+  //alert ( currsect +'______'+totsects+'\n'+currpart+'______'+totparts );
 //----------------------------
 for(let i=0; i<maxsect; i++){
   if(i > totsects-1) break;
@@ -1283,7 +1313,7 @@ if(popt=='endofcourse'){
   const  icrrimg1='🙂';
   const aicrrimg2=['💪','🏃','🏃‍♂️','🏃‍♀️','🧗','🧗‍♂️','🧗‍♀️','🏇','🏂','🏄','🏄‍♂️','🏄‍♀️','🚣','🚣‍♂️','🚣‍♀️','⛹','⛹️‍♂️','⛹️‍♀️','🏋','🏋️‍♂️','🏋️‍♀️','🚴','🚴‍♂️','🚴‍♀️','🚵','🚵‍♂️','🚵‍♀️','🤾','🤾‍♂️','🤾‍♀️'];
 
-//['💪','🚀','🏋️‍♂️','🍦','🍨','🍪','🍫','🍰','🧁','⊛','🍩','☕','🥛','🍹','🥤','⛵','🛶','🎁','🎀','🏀','🎾','🏓'];
+//['💪','🚀','🏋️‍♂️','🍦','🍨','🍪','🍫','🍰','??','⊛','🍩','☕','🥛','🍹','🥤','⛵','🛶','🎁','🎀','🏀','🎾','🏓'];
   const  icrrimg2 = 
      aicrrimg2[getrandnum(aicrrimg2.length)];
   return "Good effort! Your answer was incorrect. Try again.<br/><span style='font-size:"+fntsz+"'>"+
@@ -1348,7 +1378,6 @@ return String(pstr)
 //.replace(/(\w)uh(\w)/g, '$1ü$2')
 //.replace(/(\w)wh(\w)/g, '$1ẅ$2')
 .replace(/(\w)y`(\w)/g, '$1ỳ$2')
-//.replace(/```/g, "'")
 ;
 //alert(obj.value);
 }//endfunc
@@ -1379,8 +1408,8 @@ function fmtstr(pstr){
 }//endfunc
 //--------------------------------------
 function showsttngs(){
-
-const atmp1=String("test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12").split(/ /);
+const lthemes="safari sahara spacepod funkypop arty cafe classic classique nature pastel altarastar unwindzone chillzone retrozone";
+const atmp1=lthemes.split(/ /);
 let msgstr='';
 let chckd='';
 for(let i in atmp1){
