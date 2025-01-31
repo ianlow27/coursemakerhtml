@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.15_250131-1147 - Additional bugfixes and enhancements
+-  Amendments as per the release description
+
 ## 0.0.14_250124-2154 - Additional enhancements including improvements in effeciency, and additional of theme styling.
 -  Amendments as per the release description
 

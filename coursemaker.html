@@ -1,7 +1,7 @@
 <!DOCTYPE html><html><head><script>
 let theme='classic';
 let pgmode='landing';
-let bdbgmode=false; //true; //false; //true; //false;
+let bdbgmode=false;//true; //false; //true; //false;
 let coursefile='./coursedata.js';
 let coursename='';
 let coursedesc='';
@@ -129,12 +129,12 @@ button {font-size:80%;}
 </center>
 
 <center>
-<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.14_250124-2154</span><br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.15_250131-1147</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
-<i><span id='h6part' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
+<i><span id='h6part' tabindex='0' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
 <br/><span id='h3part' style='font-weight:bold;font-size:128%;'></span> <!-- !! -->
-<br/><span id='h1part' style='font-weight:normal;font-size:110%;'></span> <!-- !! -->
+<br/><span id='h1part' style='font-weight:normal;font-size:100%;'></span> <!-- !! -->
 </center>
 <br/><button id='btn1' style='display:none;' onclick='gencourse();'>Begin</button>
 <div id='dv1' style='font-weight:normal;'>Loading...</div>
@@ -536,10 +536,23 @@ submitstr =    "<button id='qbtn"+i1+"' onclick='procans(\"" + functype
   strout+="<br/><br/><br/><br/><br/><br/><br/>";
   dv1.innerHTML=strout;
   pgmode='lesson';
+
+  setTimeout("postgencourse();", 800);
+
+}catch(e){
+  dbg('>>e3:'+e.message);
+}
+
+}//endfunc
+//--------------------------------------
+function postgencourse(){
+try{
+const qstcurr = document.getElementById('qst'+currqst);
+  if(typeof qstcurr != 'undefined'){
+    qstcurr.style.display='block';
+  }
+  chngfntsz();
   h6part.focus();
-   dbg('qst'+currqst);
-  document.getElementById('qst'+currqst).style.display='block';
-   setTimer("chngfntsz();", 800);
 }catch(e){
   dbg('>>e3:'+e.message);
 }
@@ -927,7 +940,7 @@ return 1;
 function checkjs(){
 for(let i=1; i<=totparts; i++){
   if(String(eval('part'+sprintf0d(2,i))).trim()==''){ 
-    alert("ERROR: missing or malformed '"+sectionfldr+"/part"+sprintf0d(2,i)+".js'");
+    alert("ERROR: missing or malformed './"+sectionfldr+"/part"+sprintf0d(2,i)+".js'");
   }//endif
 }//endfor
 }//endfunc
@@ -941,7 +954,7 @@ setTimeout("shwlndpghdr();", 800);
   let strout='';
   const asects=sectionlist.split(/%%%/);
   //alert("'./"+coursefldr+"/cover.png'");
-  strout+="<center><img src='./"+coursefldr+"/cover.png' ></img>";
+  strout+="<center><img src='./"+coursefldr+"/cover.png' style='width:98%'></img>";
   strout+='<table>';
   for(i in asects){
     const atmp1=asects[i].split(/\|/);
@@ -1244,6 +1257,7 @@ if(typeof spfntsz !='undefined'){
 
 bd1.style.fontSize=fntsz;
 localStorage.setItem(appref+'bd1fntsz',fntsz);
+
 }//endfunc
 //------------------
 function outemoji(popt){
@@ -1270,7 +1284,7 @@ if(popt=='endofcourse'){
   
 }else if(popt=='endofpart'){    
   const apartimg1=['🤩','😎','😃'];
-  const apartimg2=['✨','🌟','★'];
+  const apartimg2=['✨','🌟','🌟'];
   const  partimg1 = 
      apartimg1[getrandnum(apartimg1.length)];
   const  partimg2 = 
@@ -1386,6 +1400,8 @@ function fmtstr(pstr){
 //return pstr;
 //console.log('1__'+pstr);
   const outstr=String(pstr)
+    .replace(/⁽/g, '<b><u>')
+    .replace(/⁾/g, '</u></b>')
          .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
          .replace(/##(\s+)/g, currpart+'.'+currqst+''+"$1")
          .replace(/''([\w\-\s\.\-_]+)''/g, "<i>$1</i>")
