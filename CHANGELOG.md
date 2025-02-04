@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.18_250204-1604 - Changed gitignore to ignore specific project(s)
+-  Amendments as per the release description
+
 ## 0.0.17_250204-1600 - Changed gitignore to ignore specific project(s)
 -  Amendments as per the release description
 
