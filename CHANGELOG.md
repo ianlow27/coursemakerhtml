@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.16_250204-1550 - Changed gitignore to ignore specific project(s)
+-  Amendments as per the release description
+
 ## 0.0.15_250131-1147 - Additional bugfixes and enhancements
 -  Amendments as per the release description
 
