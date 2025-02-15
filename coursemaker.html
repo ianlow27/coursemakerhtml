@@ -2,7 +2,7 @@
 let theme='classic';
 let pgmode='landing';
 let bdbgmode=false;//true; //false; //true; //false;
-let coursefile='./coursedata.js';
+let coursefile='./democourse/coursedata.js';
 let coursename='';
 let coursedesc='';
 let coursefldr='';
@@ -88,23 +88,35 @@ button {font-size:80%;}
 
 
 
-.light{background-color:white;color:black;font-family: Times New Roman;}
-.dark{background-color:black;color:white;font-family: Times New Roman;}
 
-.safari{background-color:darkgreen;color:moccasin;font-family: courier;}
-.sahara{background-color:moccasin;color:saddlebrown;font-family: courier;} 
-.spacepod{background-color:aliceblue;color:darkslategrey;font-family: courier; xx: monospace;}
-.funkypop{background-color:lemonchiffon;color:magenta;font-family:Arial; xx: sans-serif;}  
-.arty{background-color:linen;color:mediumblue;font-family: cursive;}
-.cafe{background-color:papayawhip;color:saddlebrown;font-family: cursive;}
-.classic{background-color:white;color:black;font-family:times new roman; xx: serif;}
-.classique{background-color:black;color:white;font-family:times new roman; xx: serif;}
-.nature{background-color:palegreen;color:saddlebrown;font-family: cursive;}
-.pastel{background-color:mistyrose;color:olivedrab;font-family: courier;}
-.altarastar{background-color:darkslateblue;color:aliceblue;font-family: courier; xx:monospace;}
-.unwindzone{background-color:midnightblue;color:thistle;font-family:Arial; xx: sans-serif; }
-.chillzone{background-color:black;color:powderblue;font-family: courier; xx:monospace;}
-.retrozone{background-color:saddlebrown;color:aliceblue;font-family: cursive;} 
+/* SERIF */
+.navy{background-color:#224;color:white;font-family:serif;xx:times new roman; xx: serif;}
+.slatebrown{background-color:#211;color:white;font-family:serif;xx:times new roman; xx: serif;}
+.slateblue{background-color:#112;color:white;font-family:serif;xx:times new roman; xx: serif;}
+.slategreen{background-color:#121;color:white;font-family:serif;xx:times new roman; xx: serif;}
+.slategrey{background-color:#222;color:white;font-family:serif;xx:times new roman; xx: serif;}
+.classic{background-color:white;color:black;font-family:serif;xx:times new roman; xx: serif;}
+.classique{background-color:black;color:white;font-family:serif;xx:times new roman; xx: serif;}
+
+/* SANS-SERIF */
+.funkypop{background-color:lemonchiffon;color:#404;font-family:sans-serif;xx1:Times New Roman; xx: sans-serif;}  
+.nature{background-color:#bfb;color:#200;font-family:sans-serif;xx: cursive;}
+.altarastar{background-color:#112;color:#eef;font-family:sans-serif;xx: arial; xx:monospace;}
+.unwindzone{background-color:#001;color:#faf;font-family:sans-serif;xx:Arial; xx: sans-serif; }
+.retrozone{background-color:#211;color:#fcf;font-family:sans-serif;xx: cursive;} 
+
+/* MONOSPACE */
+.arty{background-color:#ffc;color:#004;font-family:monospace; xx: cursive;}
+.cafe{background-color:#ffd;color:#200;font-family:monospace; xx: cursive;}
+.safari{background-color:#131;color:moccasin;font-family: monospace;}
+.sahara{background-color:#ffefea;color:#210;font-family: monospace;} 
+.spacepod{background-color:#efefff;color:#002;font-family: monospace; xx: monospace;}
+.pastel{background-color:#fef;color:#020;font-family: monospace;}
+.chillzone{background-color:black;color:#faf;font-family: monospace; xx:monospace;}
+
+
+
+
  
 
 
@@ -129,7 +141,7 @@ button {font-size:80%;}
 </center>
 
 <center>
-<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.18_250204-1604</span><br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.19_250215-2116</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
 <i><span id='h6part' tabindex='0' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
@@ -166,7 +178,12 @@ let remtries=10;
 function seturlparms(){
 try{
   const srchprms = new URLSearchParams(document.location.search);
-  const gotoref=srchprms.get('goto');
+  let          gotoref=srchprms.get('goto');
+  if(!gotoref) gotoref=srchprms.get('ref');
+  if(!gotoref) gotoref=srchprms.get('open');
+  if(!gotoref) gotoref=srchprms.get('jumpto');
+  if(!gotoref) gotoref=srchprms.get('skipto');
+
   if(gotoref){
     //alert(gotoref);
     const atmp1=gotoref.split(/\-/);
@@ -366,12 +383,14 @@ try{
   //alert(j+'____ '+asel[j]);
         let aqst_j_ ='';
         if(asel[j].match(/\]/)){
+          let boxwidth='50';
+          if(aqst[0].match(/(missing letter\(s\))/)) boxwidth='10';
           const atmp1=asel[j].split(/\]/);
           if(ansstr!="") ansstr+="|";
-          ansstr+=atmp1[0];//.replace(/```/g, "'");
+          ansstr+=atmp1[0];
           if(ansidstr!="") ansidstr+="|";
           ansidstr+='ans'+i1+'_'+j;
-          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:50px' value=\""+(  (typeof afllblnkvals[j-1] != 'undefined') ? afllblnkvals[j-1] : ''      )+"\"></input>"+atmp1[1].replace(/```/g, "'");
+          qststr+="<input id='"+'ans'+i1+'_'+j+ "' style='width:"+boxwidth+"px' value=\""+(  (typeof afllblnkvals[j-1] != 'undefined') ? afllblnkvals[j-1] : ''      )+"\"></input>"+atmp1[1].replace(/```/g, "'");
     //alert('1___'+qststr);
         }else {
           qststr+=asel[j].replace(/```/g, "'");
@@ -390,9 +409,10 @@ try{
       qststr+="<input id='exclwrds' type='hidden' value='"+aqst[2]+"' />";
       //const ainclwds=aqst[3].split(/ /);
       let inclwds=aqst[3].replace(/(=[a-zA-Z_\-]*)/ig, '');
-      qststr+="<input id='inclwrds' type='hidden' value='"+inclwds+"' />";      
-      qststr+="<div style='font-size:80%;color:red;'><b>Disallowed words:</b> "+aqst[2]+"</div>"
-      +"<div style='font-size:80%;color:green;'><b>Required words:</b> "+aqst[3]+"</div>"
+      let exclwds=aqst[2].replace(/(=[a-zA-Z_\-]*)/ig, '');
+      qststr+="<input id='inclwrds' type='hidden' value='"+aqst[3]+"' />";      
+      qststr+="<div style='font-size:80%;color:red;'><b>Disallowed words:</b> "+exclwds+"</div>"
+      +"<div style='font-size:80%;color:green;'><b>Required words:</b> "+inclwds+"</div>"
       +"<div style='font-size:80%;color:darkslategray;'><b>Minimum chars:</b> "+aqst[1]+"</div>"
 +"<textarea id='txtvcbwrite"+currref()+"' style='width:95%;height:100px;'>"+fllblnkvals+"</textarea>";
 //alert(fllblnkvals);
@@ -595,14 +615,19 @@ if(ptype=='info'){
 	  for(let i in aexcl){
 		let rgx1='';
 		aexcl[i]=aexcl[i].replace(/\^/g, "\\^");
-		if(aexcl[i].substr(0,1)=='['){
+		const awd=aexcl[i].split(/=/);
+        //let exclw=awd[0];
+        if(aexcl[i].substr(0,1)=='['){
 	      rgx1=new RegExp(aexcl[i], 'ig');
 	    }else{
-	      rgx1=new RegExp('\\b'+aexcl[i]+'\\b', 'ig');
+	      rgx1=new RegExp('\\b'+awd[0]+'\\b', 'ig');
 		}
 		//alert(aexcl[i]);
 		if(String(txtvcbwrite.value).match(rgx1)){
-			alert(aexcl[i]+' found!!');
+			alert(awd[0]+' found!!'+(
+			  (typeof awd[1]!='undefined') ?
+			  '\nUse '+awd[1]+' instead': ''
+            ));
 			bok=false;
 			break;
 	    }
@@ -612,10 +637,15 @@ if(ptype=='info'){
       aincl =inclwrds.value.split(/\s/);
 	  for(let i in aincl){
     	aincl[i]=aincl[i].replace(/\^/g, "\\^");
-        let rgx1=new RegExp('\\b'+aincl[i]+'\\b', 'ig');
+    	const awd=aincl[i].split(/=/);
+        let rgx1=new RegExp('\\b'+awd[0]+'\\b', 'ig');
 		//alert(aexcl[i]);
 		if(!String(txtvcbwrite.value).match(rgx1)){
-			alert(aincl[i]+' missing!!');
+			alert(awd[0]+' missing!!'+(
+			  (typeof awd[1]!='undefined') ?
+			  '\n('+awd[1]+')': ''
+            ));
+			
 			bok=false;
 			break;
 	    }
@@ -1371,6 +1401,7 @@ function cnvinpt2acnts(pstr){
 //return pstr;
 return String(pstr)
 .replace(/a\/u\b/g, 'áu')
+
 .replace(/a\^/g, 'â')
 .replace(/e\^/g, 'ê')
 .replace(/i\^/g, 'î')
@@ -1378,6 +1409,15 @@ return String(pstr)
 .replace(/u\^/g, 'û')
 .replace(/w\^/g, 'ŵ')
 .replace(/y\^/g, 'ŷ')
+
+.replace(/A\^/g, 'Â')
+.replace(/E\^/g, 'Ê')
+.replace(/I\^/g, 'Î')
+.replace(/O\^/g, 'Ô')
+.replace(/U\^/g, 'Û')
+.replace(/W\^/g, 'Ŵ')
+.replace(/Y\^/g, 'Ŷ')
+
 .replace(/(\w)a%(\w)/g, '$1ä$2')
 .replace(/(\w)e%(\w)/g, '$1ë$2')
 .replace(/(\w)i%(\w)/g, '$1ï$2')
@@ -1391,7 +1431,7 @@ return String(pstr)
 //.replace(/(\w)oh(\w)/g, '$1ö$2')
 //.replace(/(\w)uh(\w)/g, '$1ü$2')
 //.replace(/(\w)wh(\w)/g, '$1ẅ$2')
-.replace(/(\w)y`(\w)/g, '$1ỳ$2')
+.replace(/(\w)y`/g, '$1ỳ')
 ;
 //alert(obj.value);
 }//endfunc
@@ -1399,12 +1439,22 @@ return String(pstr)
 function fmtstr(pstr){
 //return pstr;
 //console.log('1__'+pstr);
-  const outstr=String(pstr)
+  const outstr=String( 
+        cnvinpt2acnts(pstr) )
     .replace(/⁽/g, '<b><u>')
     .replace(/⁾/g, '</u></b>')
          .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
          .replace(/##(\s+)/g, currpart+'.'+currqst+''+"$1")
          .replace(/''([\w\-\s\.\-_]+)''/g, "<i>$1</i>")
+    .replace(/¬d/g, 'ᵈ')
+    .replace(/¬m/g, 'ᵐ')
+    .replace(/¬a/g, 'ˡ')
+    .replace(/¬t/g, 'ᵗ')
+    .replace(/¬c/g, 'ᶜ')
+    .replace(/¬h/g, 'ʰ')
+    .replace(/¬b/g, 'ᵇ')
+    .replace(/¬l/g, 'ˡ')
+    .replace(/¬g/g, 'ᵍ')
          .replace(/\{\{/g, '<b>')
          .replace(/\}\}/g, '</b>')
          .replace(/\(\(/g, '<u>')
@@ -1413,6 +1463,7 @@ function fmtstr(pstr){
          .replace(/\]\]/g, '</i>')
          .replace(/>>>/g, '<br/><br/>')
          .replace(/>>/g, '<br/>')
+         .replace(/__/g, '&emsp;')
          .replace(/\{([a-z0-9\-_]+)\.mp4\}/g, "<video controls width='96%' controlslist='nofullscreen nodownload noremoteplayback noplaybackrate foobar' ><source src='./"+coursefldr+"/"+sectionfldr+"/$1.mp4' type='video/mp4' ></video>")
      .replace(/\{([a-z0-9\-_]+)\.(png|gif|jpg)\}/g, "<center><img style='max-width:96%;max-height:150px;xtext-alignment:center;' src='./"+coursefldr+"/"+sectionfldr+"/$1.$2'  ></img></center>")
      .replace(/\{([a-z0-9\-_]+)\.(mp3|m4a)\}/g, 
@@ -1424,7 +1475,10 @@ function fmtstr(pstr){
 }//endfunc
 //--------------------------------------
 function showsttngs(){
-const lthemes="safari sahara spacepod funkypop arty cafe classic classique nature pastel altarastar unwindzone chillzone retrozone";
+//const lthemes="slategrey slategreen slateblue slatebrown navy safari sahara spacepod funkypop arty cafe classic classique nature pastel altarastar unwindzone chillzone retrozone";
+
+const lthemes="navy slatebrown slateblue slategreen slategrey classic classique funkypop nature altarastar retrozone arty cafe safari sahara spacepod pastel chillzone";
+
 const atmp1=lthemes.split(/ /);
 let msgstr='';
 let chckd='';

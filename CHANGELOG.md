@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.19_250215-2116 - Latest changes and bugfixes including moving project data file coursedata.js to project folder instead of parent folder, handling of additional accented characters, and enhancements in visual clarity of certain quiz types.
+-  Amendments as per the release description
+
 ## 0.0.18_250204-1604 - Changed gitignore to ignore specific project(s)
 -  Amendments as per the release description
 
