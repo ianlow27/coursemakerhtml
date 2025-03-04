@@ -141,7 +141,7 @@ button {font-size:80%;}
 </center>
 
 <center>
-<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.19_250215-2116</span><br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.20_250304-2020</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
 <i><span id='h6part' tabindex='0' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
@@ -354,7 +354,7 @@ try{
     if(currqst > alines.length){
       //alert('End of part');
       functype='endcourse';
-      strout='<h2>End of Part</h2>';
+      strout='<h2>past end of part '+currpart+'</h2>';
       strout+=  "<br/><button id='btnbk' onclick='goback();'>Back</button>&emsp;&emsp;";
       break;
     }
@@ -383,8 +383,8 @@ try{
   //alert(j+'____ '+asel[j]);
         let aqst_j_ ='';
         if(asel[j].match(/\]/)){
-          let boxwidth='50';
-          if(aqst[0].match(/(missing letter\(s\))/)) boxwidth='10';
+          let boxwidth='50'
+          if(aqst[0].match(/( letter\(s\))/)) boxwidth='10';
           const atmp1=asel[j].split(/\]/);
           if(ansstr!="") ansstr+="|";
           ansstr+=atmp1[0];
@@ -1398,8 +1398,8 @@ msgout(wrtngs +  "<hr/><b>Entries are deleted if they get beyond a certain volum
 //alert(8888);
 //--------------------
 function cnvinpt2acnts(pstr){
-//return pstr;
 return String(pstr)
+
 .replace(/a\/u\b/g, 'áu')
 
 .replace(/a\^/g, 'â')
@@ -1437,10 +1437,16 @@ return String(pstr)
 }//endfunc
 //------------------
 function fmtstr(pstr){
+// ᵃ ᵇ ᶜ ᵈ ᵉ ᶠ ᵍ ʰ ⁱ ʲ ᵏ ˡ ᵐ ⁿ ᵒ ᵖ ʳ ˢ ᵗ ᵘ 
+// ᵛ ʷ ˣ ʸ ᶻ ⁰ ² ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ 
 //return pstr;
 //console.log('1__'+pstr);
   const outstr=String( 
         cnvinpt2acnts(pstr) )
+
+  .replace(/<&/g, '&lt;')
+  .replace(/&>/g, '&gt;')
+
     .replace(/⁽/g, '<b><u>')
     .replace(/⁾/g, '</u></b>')
          .replace(/##(\d+)/g, currpart+'.'+currqst+'.'+"$1 ")
@@ -1448,13 +1454,17 @@ function fmtstr(pstr){
          .replace(/''([\w\-\s\.\-_]+)''/g, "<i>$1</i>")
     .replace(/¬d/g, 'ᵈ')
     .replace(/¬m/g, 'ᵐ')
-    .replace(/¬a/g, 'ˡ')
+    .replace(/¬a/g, 'ᵃ')
     .replace(/¬t/g, 'ᵗ')
     .replace(/¬c/g, 'ᶜ')
     .replace(/¬h/g, 'ʰ')
     .replace(/¬b/g, 'ᵇ')
     .replace(/¬l/g, 'ˡ')
     .replace(/¬g/g, 'ᵍ')
+    .replace(/¬p/g, 'ᵖ')
+    .replace(/¬e/g, 'ᵉ')
+  .replace(/{~/g, '<nobr>')
+  .replace(/~}/g, '</nobr>')
          .replace(/\{\{/g, '<b>')
          .replace(/\}\}/g, '</b>')
          .replace(/\(\(/g, '<u>')
