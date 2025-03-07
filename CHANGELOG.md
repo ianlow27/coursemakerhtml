@@ -7,6 +7,9 @@
 
 ## NOTES
 
+## 0.0.21_250307-1010 - Additional amendments and bugfixes
+-  Amendments as per the release description
+
 ## 0.0.20_250304-2020 - Additional bugfixes and amendments
 -  Amendments as per the release description
 

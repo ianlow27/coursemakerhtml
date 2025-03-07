@@ -141,7 +141,7 @@ button {font-size:80%;}
 </center>
 
 <center>
-<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.20_250304-2020</span><br/>
+<span style='font-size:70%;'><b>github.com/ianlow27/CourseMakerHTML</b> 0.0.21_250307-1010</span><br/>
 <textarea id='tx1' style='display:none;width:95%;height:100px;'></textarea>
 
 <i><span id='h6part' tabindex='0' style='text-decoration:italic;font-weight:bold;font-size:108%;'></span></i>
@@ -376,7 +376,7 @@ try{
       //qststr=aqst[0];
       //alert(1);
     }else if(aqst.length == 2){
- //alert(fllblnkvals);
+//alert(fllblnkvals);
       const afllblnkvals = fllblnkvals.split(/\|/);
       functype="fillblanks";
       for(j in asel){
@@ -674,10 +674,18 @@ if(ptype=='info'){
     for(i in aansid){
       const obj = document.getElementById(aansid[i]);
       if(ptype=="fillblanks"){
-        
+
+        aans[i] = cnvinpt2acnts(aans[i]);
         // FILLBLANKS
         if(fllblnkvals!='') fllblnkvals+='|';
-        fllblnkvals+=obj.value.trim();
+if(obj.value.trim()==""){
+  fllblnkvals+="_";
+}else if((obj.value.trim()=="-")||(obj.value.trim()=="_")){
+  obj.value = "";
+  fllblnkvals+="_";
+}else{
+  fllblnkvals+=obj.value.trim();
+}
         if(obj.value.trim()=='``pass') break;
      obj.value=cnvinpt2acnts(obj.value);
   //alert(obj.value);
@@ -1431,7 +1439,18 @@ return String(pstr)
 //.replace(/(\w)oh(\w)/g, '$1ö$2')
 //.replace(/(\w)uh(\w)/g, '$1ü$2')
 //.replace(/(\w)wh(\w)/g, '$1ẅ$2')
-.replace(/(\w)y`/g, '$1ỳ')
+.replace(/a~/g, 'á')
+.replace(/e~/g, 'é')
+.replace(/i~/g, 'í')
+.replace(/o~/g, 'ó')
+.replace(/u~/g, 'ú')
+.replace(/y~/g, 'ý')
+.replace(/a`/g, 'à')
+.replace(/e`/g, 'è')
+.replace(/i`/g, 'ì')
+.replace(/o`/g, 'ò')
+.replace(/u`/g, 'ù')
+.replace(/y`/g, 'ỳ')
 ;
 //alert(obj.value);
 }//endfunc
